@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Kp.MatchWinner</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Kp.MatchWinner.MongoDB\Kp.MatchWinner.MongoDB.csproj" />
+    <ProjectReference Include="..\Kp.MatchWinner.TestBase\Kp.MatchWinner.TestBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="Mongo2Go" Version="2.2.12" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Kp.MatchWinner</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kp.MatchWinner.Domain\Kp.MatchWinner.Domain.csproj" />
+    <ProjectReference Include="..\Kp.MatchWinner.Application.Contracts\Kp.MatchWinner.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Account.Application" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="3.3.1" />
+  </ItemGroup>
+
+</Project>
