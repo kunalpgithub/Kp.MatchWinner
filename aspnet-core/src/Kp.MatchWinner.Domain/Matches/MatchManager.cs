@@ -8,6 +8,10 @@ using Volo.Abp.Domain.Services;
 
 namespace Kp.MatchWinner.Matches
 {
+//    Last 5 matches played by team
+//Last 5 matches played by team at this ground
+//Last 5 matches played by team against this team.
+
     public class MatchManager : DomainService
     {
         readonly IRepository<Match, Guid> _matchRepository;

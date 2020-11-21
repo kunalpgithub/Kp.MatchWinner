@@ -1,13 +1,34 @@
-<select name="teams" [(ngModel)]="selectedTeam">
+<div class="row">
+  <div class="col">
+    <div class="d-inline-block" ngbDropdown>
+      <button class="btn btn-outline-primary" id="ddlTeams" ngbDropdownToggle>
+        {{ selectedTeam }}
+      </button>
+      <div ngbDropdownMenu aria-labelledby="ddlTeams">
+        <ng-container *ngFor="let team of teamNames">
+          <button ngbDropdownItem (click)="selectTeam(team)">{{ team }}</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <button type="button" (click)="getScores()" class="btn btn-primary">Get Scores</button>
+  </div>
+</div>
+<!-- <select name="teams" [(ngModel)]="selectedTeam">
   <option value="">Select Team</option>
   <option *ngFor="let team of teamNames" value="{{ team }}">{{ team }}</option>
-</select>
+</select> -->
 
-<input type="button" value="Get Scores" (click)="getScores()" />
-<div *ngIf="matchScore">
-  <div>{{ matchScore.venue }}</div>
-  <div>{{ matchScore.city }}</div>
-  <div>{{ matchScore.matchDate | date }}</div>
-  <app-team-score [team]="matchScore.hostTeam"></app-team-score>
-  <app-team-score [team]="matchScore.visitorTeam"></app-team-score>
+<div class="card text-center" *ngIf="matchScore">
+  <div class="card-header">
+    <h4>{{ matchScore.hostTeam.team }} vs {{ matchScore.visitorTeam.team }}</h4>
+    <h5>{{ matchScore.venue }}, {{ matchScore.city }}</h5>
+    <h6>{{ matchScore.matchDate | date }}</h6>
+  </div>
+  <div class="card-body">
+    <app-team-score [team]="matchScore.hostTeam"></app-team-score>
+    <app-team-score [team]="matchScore.visitorTeam"></app-team-score>
+  </div>
+  <div class="card-footer">That's all for this match.</div>
 </div>

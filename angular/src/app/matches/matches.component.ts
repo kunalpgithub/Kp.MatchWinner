@@ -11,11 +11,15 @@ export class MatchesComponent implements OnInit {
   constructor(private matchService: MatchService) {} //
   teamNames: string[];
   matchScore: MatchScoreDto;
-  selectedTeam: string;
+  selectedTeam = 'Select any team';
   ngOnInit(): void {
     this.matchService.getAllTeams().subscribe(response => {
       this.teamNames = response;
     });
+  }
+
+  selectTeam(teamName: string): void {
+    this.selectedTeam = teamName;
   }
 
   getScores(): void {
