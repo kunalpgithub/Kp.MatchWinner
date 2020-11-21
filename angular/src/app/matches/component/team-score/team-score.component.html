@@ -1,0 +1,52 @@
+<table>
+  <thead>
+    <tr>
+      <th colspan="4">{{ team.team }}</th>
+    </tr>
+    <tr>
+      <!-- <th>{{ matchScore.venue }}</th>
+      <th>{{ matchScore.city }}</th>
+      <th>{{ matchScore.matchDate }}</th>-->
+      <th>Batsman</th>
+      <th>Runs</th>
+      <th>4s</th>
+      <th>6s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of team.players">
+      <ng-container *ngIf="player.batting">
+        <td>
+          {{ player.playerName }}
+        </td>
+        <td>{{ player.batting.runs }}({{ player.batting.balls }})</td>
+        <td>{{ player.batting.fours }}</td>
+        <td>{{ player.batting.sixes }}</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+<table>
+  <tr>
+    <th>Bowler</th>
+    <th>Runs</th>
+    <th>Balls</th>
+    <th>Fours</th>
+    <th>Sixes</th>
+    <th>Wicket</th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let player of team.players">
+      <ng-container *ngIf="player.bowling">
+        <td>
+          {{ player.playerName }}
+        </td>
+        <td>{{ player.bowling.runs }}</td>
+        <td>{{ player.bowling.balls }}</td>
+        <td>{{ player.bowling.fours }}</td>
+        <td>{{ player.bowling.sixes }}</td>
+        <td>{{ player.bowling.wickets }}</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

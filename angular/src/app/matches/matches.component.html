@@ -1,1 +1,13 @@
-<p>matches works!</p>
+<select name="teams" [(ngModel)]="selectedTeam">
+  <option value="">Select Team</option>
+  <option *ngFor="let team of teamNames" value="{{ team }}">{{ team }}</option>
+</select>
+
+<input type="button" value="Get Scores" (click)="getScores()" />
+<div *ngIf="matchScore">
+  <div>{{ matchScore.venue }}</div>
+  <div>{{ matchScore.city }}</div>
+  <div>{{ matchScore.matchDate | date }}</div>
+  <app-team-score [team]="matchScore.hostTeam"></app-team-score>
+  <app-team-score [team]="matchScore.visitorTeam"></app-team-score>
+</div>

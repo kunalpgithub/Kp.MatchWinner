@@ -59,7 +59,7 @@ namespace Kp.MatchWinner.Matches
                         var bowlerList = inning.Deliveries.Select(x => x.Values.First()).GroupBy(x => x.Bowler).Select(d => new PlayerScore
                         {
                             PlayerName = d.Key,
-                            Batting = new Score
+                            Bowling = new Score
                             {
                                 Runs = d.Sum(x => Convert.ToInt32(x.Runs.Batsman)),
                                 Balls = d.Count(),
