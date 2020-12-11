@@ -8,10 +8,11 @@ using Volo.Abp.Application.Services;
 
 namespace Kp.MatchWinner.Matches
 {
-    public interface IMatchService: ICrudAppService<MatchDto,Guid, PagedAndSortedResultRequestDto, MatchDto>
+    public interface IMatchService: IApplicationService
     {
-        string[] GetAllTeams();
+        MatchFiltersDto GetMatchFilters();
 
-        Task<MatchScoreDto> GetMatchScore(string TeamName);
+        MatchAnalysisDto GetMatchAnalysis(string TeamName, string OpponentTeam, string Venue);
+
     }
 }

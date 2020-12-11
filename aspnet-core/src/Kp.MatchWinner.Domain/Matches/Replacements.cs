@@ -9,6 +9,7 @@ namespace Kp.MatchWinner.Matches
     public class Replacements
     {
         public ReplacementRole[] Role { get; set; }
+        public ReplacementRole[] Match { get; set; }
     }
     public class ReplacementRole
     {
@@ -16,6 +17,7 @@ namespace Kp.MatchWinner.Matches
         public string Out { get; set; }            
         public string Reason { get; set; }
         public string Role { get; set; }
+        public string Team { get; set; }
     }
 
     public class InType { 

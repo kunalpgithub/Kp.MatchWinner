@@ -1,0 +1,25 @@
+<div class="row">
+  <input type="file" #file />
+  <button type="submit" (click)="uploadFile(file.files)">Upload Schedule</button>
+  <button type="submit" (click)="saveSchedule()">Save Schedule</button>
+</div>
+<div class="row">
+  <table class="table table-striped table-hover table-sm" *ngIf="schedules && schedules.length > 0">
+    <tr>
+      <th>Home Team</th>
+      <th>Visitor Team</th>
+      <th>Location</th>
+      <th>Date</th>
+    </tr>
+    <tbody>
+      <tr *ngFor="let schedule of schedules">
+        <td>
+          {{ schedule.homeTeam }}
+        </td>
+        <td>{{ schedule.visitorTeam }}</td>
+        <td>{{ schedule.location }}</td>
+        <td>{{ schedule.startDate | date }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

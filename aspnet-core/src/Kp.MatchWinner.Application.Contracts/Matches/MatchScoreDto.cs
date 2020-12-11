@@ -27,19 +27,21 @@ namespace Kp.MatchWinner.Matches
     public class TeamScoreDto
     {
         public string Team { get; set; }
-        public PlayerScoreDto[] Players { get; set; }
+        public List<PlayerScoreDto> Batsmen { get; set; }
+        public List<PlayerScoreDto> Bowlers { get; set; }
         public int Extra { get; set; }
     }
+
+    //public class PlayerScoreDto
+    //{
+    //    public string PlayerName { get; set; }
+    //    public ScoreDto Batting { get; set; }
+    //    public ScoreDto Bowling { get; set; }
+    //}
 
     public class PlayerScoreDto
     {
         public string PlayerName { get; set; }
-        public ScoreDto Batting { get; set; }
-        public ScoreDto Bowling { get; set; }
-    }
-
-    public class ScoreDto
-    {
         public int Runs { get; set; }
         public int Balls { get; set; }
         public int Fours { get; set; }

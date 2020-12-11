@@ -29,7 +29,7 @@ namespace Kp.MatchWinner.MongoDB
         {
             context.Services.AddMongoDbContext<MatchWinnerMongoDbContext>(options =>
             {
-                options.AddDefaultRepositories();
+                options.AddDefaultRepositories(includeAllEntities:true);
             });
 
             Configure<AbpUnitOfWorkDefaultOptions>(options =>

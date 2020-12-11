@@ -23,23 +23,22 @@ namespace Kp.MatchWinner
 
         public async Task SeedAsync(DataSeedContext context)
         {
-            if (await _matchRepository.GetCountAsync() <= 0)
-            {
-                var files = System.IO.Directory.GetFiles(@"C:\Users\kunal\OneDrive\Documents\ipl","*.yaml");
-                foreach (var file in files)
-                {
-                    Console.WriteLine(file);
-                    string yaml = System.IO.File.ReadAllText(file);
-                    INamingConvention underScoredNaming = new UnderscoredNamingConvention();
-                    var deserializer = new DeserializerBuilder()
-                        .WithNamingConvention(underScoredNaming)
-                        .Build();
-                    var item = deserializer.Deserialize<Match>(yaml);
-                    await _matchRepository.InsertAsync(item,autoSave:true);
+            //if (await _matchRepository.GetCountAsync() <= 0)
+            //{
+            //    var files = System.IO.Directory.GetFiles(@"C:\Users\kunal\OneDrive\Documents\ipl","*.yaml");
+            //    foreach (var file in files)
+            //    {
+            //        string yaml = System.IO.File.ReadAllText(file);
+            //        INamingConvention underScoredNaming = new UnderscoredNamingConvention();
+            //        var deserializer = new DeserializerBuilder()
+            //            .WithNamingConvention(underScoredNaming)
+            //            .Build();
+            //        var item = deserializer.Deserialize<Match>(yaml);
+            //        await _matchRepository.InsertAsync(item,autoSave:true);
 
-                    Console.Write($"{file} completed.");
-                }
-            }
+
+            //    }
+            //}
         }
     }
 }

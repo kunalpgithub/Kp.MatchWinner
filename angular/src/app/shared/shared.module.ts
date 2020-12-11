@@ -1,5 +1,5 @@
 import { CoreModule } from '@abp/ng.core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbAccordionModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { ThemeBasicModule } from '@abp/ng.theme.basic';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
@@ -12,15 +12,19 @@ import { NgxValidateCoreModule } from '@ngx-validate/core';
     ThemeSharedModule,
     ThemeBasicModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgbAccordionModule,
+    NgbNavModule,
+    NgxValidateCoreModule,
   ],
   exports: [
     CoreModule,
     ThemeSharedModule,
     ThemeBasicModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgbAccordionModule,
+    NgbNavModule,
+    NgxValidateCoreModule,
   ],
-  providers: []
+  providers: [],
 })
 export class SharedModule {}

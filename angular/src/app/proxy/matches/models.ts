@@ -1,11 +1,16 @@
-import type { AuditedEntityDto } from '@abp/ng.core';
 
-export interface MatchDto extends AuditedEntityDto<string> {
-  hostTeam: TeamScoreDto;
-  visitorTeam: TeamScoreDto;
-  venue: string;
-  city: string;
-  matchDate: string;
+export interface MatchAnalysisDto {
+  matchScores: MatchScoreDto[];
+  homeTeamVenueMatchScores: MatchScoreDto[];
+  visitorTeamVenueMatchScores: MatchScoreDto[];
+  playerBattles: PlayerBattleDto[];
+}
+
+export interface MatchFiltersDto {
+  teams: string[];
+  venues: string[];
+  batsMen: string[];
+  bowlers: string[];
 }
 
 export interface MatchScoreDto {
@@ -16,13 +21,16 @@ export interface MatchScoreDto {
   matchDate: string;
 }
 
-export interface PlayerScoreDto {
-  playerName: string;
-  batting: ScoreDto;
-  bowling: ScoreDto;
+export interface PlayerBattleDto {
+  batsman: string;
+  bowler: string;
+  runs: number;
+  balls: number;
+  wickets: number;
 }
 
-export interface ScoreDto {
+export interface PlayerScoreDto {
+  playerName: string;
   runs: number;
   balls: number;
   fours: number;
@@ -30,8 +38,14 @@ export interface ScoreDto {
   wickets: number;
 }
 
+export interface TeamFiltersDto {
+  batsmen: string[];
+  bowlers: string[];
+}
+
 export interface TeamScoreDto {
   team: string;
-  players: PlayerScoreDto[];
+  batsmen: PlayerScoreDto[];
+  bowlers: PlayerScoreDto[];
   extra: number;
 }

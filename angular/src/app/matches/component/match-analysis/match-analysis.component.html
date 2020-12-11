@@ -1,0 +1,30 @@
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink>Team Battle</a>
+    <ng-template ngbNavContent>
+      <app-match-score [matchScores]="matchScores"></app-match-score>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Player Battle</a>
+    <ng-template ngbNavContent
+      ><app-player-battle
+        *ngIf="playerBattles && playerBattles.length > 0"
+        [playerBattles]="playerBattles"
+      ></app-player-battle
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>{{ homeTeam }} on {{ location }}</a>
+    <ng-template ngbNavContent
+      ><app-match-score [matchScores]="homeMatchScores"></app-match-score
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>{{ visitorTeam }} on {{ location }}</a>
+    <ng-template ngbNavContent
+      ><app-match-score [matchScores]="visitorMatchScores"></app-match-score
+    ></ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>

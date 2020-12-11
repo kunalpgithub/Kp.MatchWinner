@@ -16,11 +16,34 @@ function configureRoutes(routes: RoutesService) {
         layout: eLayoutType.application,
       },
       {
-        path: '/matches',
-        name: '::Menu:Matches',
+        path: '/Matches',
+        name: '::Menu:MatchAdmin',
         iconClass: 'fas fa-book',
         order: 2,
         layout: eLayoutType.application,
+      },
+      // {
+      //   path: '/Match',
+      //   name: '::Menu:Matches',
+      //   iconClass: 'fas fa-book',
+      //   order: 2,
+      //   layout: eLayoutType.application,
+      // },
+      {
+        path: '/Match/MatchData',
+        name: '::Menu:MatchData',
+        iconClass: 'fas fa-book',
+        order: 2,
+        parentName: '::Menu:MatchAdmin',
+        layout: eLayoutType.application,
+      },
+      {
+        path: '/schedules',
+        name: '::Menu:Schedules',
+        iconClass: 'fas fa-book',
+        order: 3,
+        layout: eLayoutType.application,
+        // requiredPolicy: 'Matches.Schedules',
       },
     ]);
   };

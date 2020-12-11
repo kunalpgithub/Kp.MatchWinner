@@ -1,0 +1,24 @@
+<div class="card-deck">
+  <ng-container *ngFor="let matchScore of matchScores">
+    <div class="card w-100" *ngIf="matchScore">
+      <div class="card-header">
+        <h6>{{ matchScore.hostTeam.team }} vs {{ matchScore.visitorTeam.team }}</h6>
+        <small>
+          {{ matchScore.venue }}, {{ matchScore.city }} {{ matchScore.matchDate | date }}</small
+        >
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <app-team-score [team]="matchScore.hostTeam"></app-team-score>
+          </div>
+          <div class="col">
+            <app-team-score [team]="matchScore.visitorTeam"></app-team-score>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">That's all for this match.</div>
+    </div>
+    <div class="row">&nbsp;</div>
+  </ng-container>
+</div>

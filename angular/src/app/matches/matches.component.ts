@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchService } from '@proxy';
-import { MatchScoreDto } from '@proxy/matches';
+
+import { ScheduleDto, ScheduleService } from '@proxy/schedules';
 
 @Component({
   selector: 'app-matches',
@@ -8,23 +9,42 @@ import { MatchScoreDto } from '@proxy/matches';
   styleUrls: ['./matches.component.scss'],
 })
 export class MatchesComponent implements OnInit {
-  constructor(private matchService: MatchService) {} //
   teamNames: string[];
-  matchScore: MatchScoreDto;
-  selectedTeam = 'Select any team';
+  venues: string[];
+  schedules: ScheduleDto[];
+  selectedTeam = 'Select playing team';
+  selectedOpponentTeam = 'Select opponent team';
+  selectedVenue = 'Select Venue';
+
+  /**
+   *
+   */
+  constructor(private matchService: MatchService, private scheduleService: ScheduleService) {}
   ngOnInit(): void {
-    this.matchService.getAllTeams().subscribe(response => {
-      this.teamNames = response;
+    // this.matchService.getMatchFilters().subscribe(response => {
+    //   this.teamNames = response.teams;
+    //   this.venues = response.venues;
+    // });
+    this.scheduleService.getSchedule().subscribe(response => {
+      this.schedules = response;
     });
   }
+
+  loadSchedule(): void {}
 
   selectTeam(teamName: string): void {
     this.selectedTeam = teamName;
   }
+  selectOpponentTeam(teamName: string): void {
+    this.selectedOpponentTeam = teamName;
+  }
+  selectVenue(teamName: string): void {
+    this.selectedVenue = teamName;
+  }
 
-  getScores(): void {
-    this.matchService.getMatchScoreByTeamName(this.selectedTeam).subscribe(response => {
-      this.matchScore = response;
-    });
+  showAnalysis(index: number): void {
+    this.schedules[index].showAnalysis = true;
+    this.selectedTeam = this.schedules[index].homeTeam;
+    this.selectedOpponentTeam = this.schedules[index].visitorTeam;
   }
 }
