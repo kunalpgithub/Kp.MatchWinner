@@ -1,25 +1,48 @@
-<h1>Big Base League 2020</h1>
-<ngb-accordion #acc="ngbAccordion" activeIds="ngbSchedule">
-  <ng-container *ngFor="let schedule of schedules; let i = index">
-    <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}">
-      <ng-template ngbPanelHeader>
-        <h5>
-          Match {{ i + 1 }} {{ schedule.homeTeam }} vs {{ schedule.visitorTeam }}
-          <small>{{ schedule.location }}</small>
-          <small>{{ schedule.startDate | date }}</small>
-        </h5>
-        <button type="button" (click)="showAnalysis(i); acc.toggle('panel-' + i)">
-          Show Analysis
-        </button>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <app-match-analysis
-          *ngIf="schedule.showAnalysis"
-          [homeTeam]="schedule.homeTeam"
-          [visitorTeam]="schedule.visitorTeam"
-          [location]="schedule.location"
-        ></app-match-analysis>
-      </ng-template>
-    </ngb-panel>
-  </ng-container>
-</ngb-accordion>
+<div class="row justify-content-center p-3">
+  <h1>Big Base League 2020</h1>
+</div>
+<div class="row justify-content-center">
+  <ngb-accordion
+    #acc="ngbAccordion"
+    activeIds="ngbSchedule"
+    animation="true"
+    type="light"
+    style="width: 100%"
+  >
+    <ng-container *ngFor="let schedule of schedules; let i = index">
+      <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}">
+        <ng-template ngbPanelHeader>
+          <!-- <div class="row"></div> -->
+          <div class="float-left">
+            <h5>Match {{ i + 1 }} {{ schedule.homeTeam }} vs {{ schedule.visitorTeam }}</h5>
+            <p>
+              <small>{{ schedule.location }},</small>
+              <small>{{ schedule.startDate | date }}</small>
+            </p>
+          </div>
+
+          <div class="float-right">
+            <button
+              type="button"
+              (click)="showAnalysis(i); acc.toggle('panel-' + i)"
+              class="btn btn-success float-right"
+            >
+              Show Analysis
+            </button>
+          </div>
+
+          <!-- <div class="float-left"></div>
+          <div class="justify-content-center"></div> -->
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <app-match-analysis
+            *ngIf="schedule.showAnalysis"
+            [homeTeam]="schedule.homeTeam"
+            [visitorTeam]="schedule.visitorTeam"
+            [location]="schedule.location"
+          ></app-match-analysis>
+        </ng-template>
+      </ngb-panel>
+    </ng-container>
+  </ngb-accordion>
+</div>

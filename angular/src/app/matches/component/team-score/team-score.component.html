@@ -1,49 +1,45 @@
-<div class="row">
-  <h6>{{ team.team }}</h6>
+<div class="row justify-content-center">
+  {{ team.team }}
 </div>
-<div class="row">
-  <table class="table table-striped table-hover table-sm">
-    <thead>
-      <tr>
-        <th>Batsman</th>
-        <th>Runs(Balls)</th>
-        <!-- <th>4s</th>
-        <th>6s</th> -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let player of team.batsmen">
-        <td>
-          {{ player.playerName }}
-        </td>
-        <td>{{ player.runs }}({{ player.balls }})</td>
-        <!-- <td>{{ player.fours }}</td>
-        <td>{{ player.sixes }}</td> -->
-      </tr>
-    </tbody>
-  </table>
+<hr class="m-1" />
+<div class="row m-0">
+  <div class="float-left col">
+    <div *ngFor="let player of team.batsmen" class="row">
+      <img
+        src="../../../../assets/img/avtar/avatar2.png"
+        class="rounded-circle float-left img-thumbnail profile"
+        alt="..."
+        width="25"
+        height="25"
+      />
+      <div class="float-right ml-4">
+        <div class="row text-nowrap">
+          <small>{{ player.playerName }}</small>
+        </div>
+        <div class="row fs-6">
+          <small>{{ player.runs }}({{ player.balls }})</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="float-right col">
+    <div *ngFor="let player of team.bowlers" class="row">
+      <img
+        src="../../../../assets/img/avtar/avatar2.png"
+        class="rounded-circle float-left img-thumbnail profile"
+        alt="..."
+        width="25"
+        height="25"
+      />
+      <div class="float-right ml-4">
+        <div class="row text-nowrap">
+          <small>{{ player.playerName }}</small>
+        </div>
+        <div class="row">
+          <small>{{ player.runs }}/{{ player.wickets }} ({{ player.balls }})</small>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="row"></div>
-<div class="row">
-  <table class="table table-striped table-hover table-sm">
-    <tr>
-      <th>Bowler</th>
-      <th>Runs(Balls)</th>
-      <!-- <th>Balls</th> -->
-      <!-- <th>Fours</th>
-      <th>Sixes</th>-->
-      <th>Wicket</th>
-    </tr>
-    <tbody>
-      <tr *ngFor="let player of team.bowlers">
-        <td>
-          {{ player.playerName }}
-        </td>
-        <td>{{ player.runs }}({{ player.balls }})</td>
-        <!-- <td>{{ player.fours }}</td>
-        <td>{{ player.sixes }}</td>-->
-        <td>{{ player.wickets }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<hr class="m-1" />

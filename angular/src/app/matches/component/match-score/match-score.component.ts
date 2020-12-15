@@ -8,6 +8,7 @@ import { MatchScoreDto } from '@proxy/matches';
 })
 export class MatchScoreComponent implements OnInit {
   @Input() matchScores: MatchScoreDto;
+  @Input() showTeam: string = '';
   constructor() {}
 
   ngOnInit(): void {}

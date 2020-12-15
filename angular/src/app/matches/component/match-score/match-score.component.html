@@ -1,6 +1,11 @@
-<div class="card-deck">
-  <ng-container *ngFor="let matchScore of matchScores">
-    <div class="card w-100" *ngIf="matchScore">
+<div class="d-flex align-content-start flex-wrap">
+  <ng-container *ngFor="let matchScore of matchScores; odd as isOdd; even as isEven">
+    <div
+      class="card flex-fill ml-3 mt-3"
+      [ngClass]="{ 'bg-light': isOdd, 'text-white bg-secondary': isEven }"
+      *ngIf="matchScore"
+      style="max-width: 365px"
+    >
       <div class="card-header">
         <h6>{{ matchScore.hostTeam.team }} vs {{ matchScore.visitorTeam.team }}</h6>
         <small>
@@ -8,17 +13,17 @@
         >
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <app-team-score [team]="matchScore.hostTeam"></app-team-score>
-          </div>
-          <div class="col">
-            <app-team-score [team]="matchScore.visitorTeam"></app-team-score>
-          </div>
-        </div>
+        <app-team-score
+          *ngIf="showTeam == '' || showTeam == matchScore.hostTeam.team"
+          [team]="matchScore.hostTeam"
+        ></app-team-score>
+        <app-team-score
+          *ngIf="showTeam == '' || showTeam == matchScore.visitorTeam.team"
+          [team]="matchScore.visitorTeam"
+        ></app-team-score>
       </div>
-      <div class="card-footer">That's all for this match.</div>
+      <!-- <div class="card-footer">That's all for this match.</div> -->
     </div>
-    <div class="row">&nbsp;</div>
+    <!-- <div class="row">&nbsp;</div> -->
   </ng-container>
 </div>

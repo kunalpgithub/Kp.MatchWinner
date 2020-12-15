@@ -79,7 +79,7 @@ namespace Kp.MatchWinner.Matches
                             PlayerName = d.Key,
                             Runs = d.Sum(x => Convert.ToInt32(x.Runs.Batsman)),
                             Balls = d.Count(),
-                        }).Where(x => x.Runs >= 20).OrderByDescending(x => x.Runs).ToList();
+                        }).OrderByDescending(x => x.Runs).Take(3).ToList();
 
                         var bowlerList = inning.Deliveries.Select(x => x.Values.First()).GroupBy(x => x.Bowler).Select(d => new PlayerScore
                         {
@@ -87,7 +87,7 @@ namespace Kp.MatchWinner.Matches
                             Runs = d.Sum(x => Convert.ToInt32(x.Runs.Batsman)),
                             Balls = d.Count(),
                             Wickets = d.Sum(x => Convert.ToInt32(x.Wicket == null ? 0 : 1))
-                        }).Where(x => x.Wickets > 0).OrderByDescending(x => x.Wickets).ToList();
+                        }).OrderByDescending(x => x.Wickets).Take(3).ToList();
 
                         if (inning.Team == matchScore.HostTeam.Team)
                         {
@@ -114,7 +114,7 @@ namespace Kp.MatchWinner.Matches
                 Runs = p.Sum(x => x.Runs.Total),
                 Balls = p.Count(),
                 Wickets = p.Count(x => x.Wicket != null)
-            }).Where(x => x.Balls > 15).OrderByDescending(x => x.Runs).ToList();
+            }).Where(x => x.Balls > 5).OrderByDescending(x => x.Runs).ToList();
 
             return playerBattle;
         }
