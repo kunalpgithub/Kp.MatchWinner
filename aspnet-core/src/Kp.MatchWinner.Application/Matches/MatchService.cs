@@ -49,7 +49,7 @@ namespace Kp.MatchWinner
 
         public MatchAnalysisDto GetMatchAnalysis(string TeamName, string OpponentTeam, string Venue)
         {
-            return ObjectMapper.Map<MatchAnalysis, MatchAnalysisDto>(_matchManager.GetMatchAnalysis(TeamName, OpponentTeam, Venue));
+            return ObjectMapper.Map<Matches.MatchAnalysis, MatchAnalysisDto>(_matchManager.GetMatchAnalysis(TeamName, OpponentTeam, Venue));
         }
 
         public async Task<bool> UploadAsync(IFormFile File)

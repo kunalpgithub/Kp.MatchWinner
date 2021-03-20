@@ -30,10 +30,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./matches/matches.module').then(m => m.MatchesModule),
   },
-  {
-    path: 'schedules',
-    loadChildren: () => import('./schedule/schedule.module').then(m => m.ScheduleModule),
-  },
+  // {
+  //   path: 'schedules',
+  //   loadChildren: () => import('./schedule/schedule.module').then(m => m.ScheduleModule),
+  // },
 ];
 
 @NgModule({

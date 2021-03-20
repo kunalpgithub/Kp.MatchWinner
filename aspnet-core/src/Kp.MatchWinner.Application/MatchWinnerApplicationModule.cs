@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Account;
+﻿using Kp.MatchWinner.MatchAdmin;
+using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -25,6 +27,9 @@ namespace Kp.MatchWinner
             {
                 options.AddMaps<MatchWinnerApplicationModule>();
             });
+            //context.Services.Add(ServiceDescriptor.Transient<ITournamentService, TournamentService>());
+            //context.Services.AddScoped<ITournamentService>(sp => sp.GetRequiredService<TournamentService>());
+            //context.Services.AddScoped<IMatchScheduleService>(sp => sp.GetRequiredService<MatchScheduleService>());
         }
     }
 }

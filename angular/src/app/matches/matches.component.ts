@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatchService } from '@proxy';
-
-import { ScheduleDto, ScheduleService } from '@proxy/schedules';
+import { TournamentMatchDto, TournamentMatchService } from '@proxy/match-admin';
 
 @Component({
   selector: 'app-matches',
@@ -9,9 +7,9 @@ import { ScheduleDto, ScheduleService } from '@proxy/schedules';
   styleUrls: ['./matches.component.scss'],
 })
 export class MatchesComponent implements OnInit {
+  tournamentMatches: TournamentMatchDto[];
   teamNames: string[];
   venues: string[];
-  schedules: ScheduleDto[];
   selectedTeam = 'Select playing team';
   selectedOpponentTeam = 'Select opponent team';
   selectedVenue = 'Select Venue';
@@ -19,18 +17,15 @@ export class MatchesComponent implements OnInit {
   /**
    *
    */
-  constructor(private matchService: MatchService, private scheduleService: ScheduleService) {}
+  constructor(private tournamentMatchService: TournamentMatchService) {}
   ngOnInit(): void {
-    // this.matchService.getMatchFilters().subscribe(response => {
-    //   this.teamNames = response.teams;
-    //   this.venues = response.venues;
-    // });
-    this.scheduleService.getSchedule().subscribe(response => {
-      this.schedules = response;
-    });
+    const tournamentId = '6465ab5e-8a30-d26a-22ec-39fad4fda0ce'; // e4102db3-45d8-112d-a247-39fad618aea6
+    this.tournamentMatchService
+      .getMatchesByTournamentByTournamentId(tournamentId)
+      .subscribe(response => {
+        this.tournamentMatches = response;
+      });
   }
-
-  loadSchedule(): void {}
 
   selectTeam(teamName: string): void {
     this.selectedTeam = teamName;
@@ -43,8 +38,6 @@ export class MatchesComponent implements OnInit {
   }
 
   showAnalysis(index: number): void {
-    this.schedules[index].showAnalysis = true;
-    this.selectedTeam = this.schedules[index].homeTeam;
-    this.selectedOpponentTeam = this.schedules[index].visitorTeam;
+    var currentMatch = this.tournamentMatches[index];
   }
 }

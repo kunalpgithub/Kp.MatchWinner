@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatchScoreDto } from '@proxy/matches';
+import { TournamentMatchDto } from '@proxy/match-admin';
 
 @Component({
   selector: 'app-match-score',
@@ -7,7 +7,7 @@ import { MatchScoreDto } from '@proxy/matches';
   styleUrls: ['./match-score.component.scss'],
 })
 export class MatchScoreComponent implements OnInit {
-  @Input() matchScores: MatchScoreDto;
+  @Input() matchScores: TournamentMatchDto;
   @Input() showTeam: string = '';
   constructor() {}
 

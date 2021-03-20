@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PlayerBattleDto } from '@proxy/matches';
+// import { PlayerBattleDto } from '@proxy/matches';
 
 @Component({
   selector: 'app-player-battle',
@@ -9,7 +9,7 @@ import { PlayerBattleDto } from '@proxy/matches';
 export class PlayerBattleComponent implements OnInit {
   constructor() {}
 
-  @Input() playerBattles: PlayerBattleDto[];
+  // @Input() playerBattles: PlayerBattleDto[];
 
   ngOnInit(): void {}
 }

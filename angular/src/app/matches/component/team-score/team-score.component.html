@@ -1,9 +1,9 @@
 <div class="row justify-content-center">
-  {{ team.team }}
+  {{ teamName }}
 </div>
 <hr class="m-1" />
 <div class="row m-0">
-  <div class="float-left col">
+  <div class="float-left col" *ngIf="team && team.batsmen">
     <div *ngFor="let player of team.batsmen" class="row">
       <img
         src="../../../../assets/img/avtar/avatar2.png"
@@ -14,15 +14,15 @@
       />
       <div class="float-right ml-4">
         <div class="row text-nowrap">
-          <small>{{ player.playerName }}</small>
+          <small>{{ player.name }}</small>
         </div>
         <div class="row fs-6">
-          <small>{{ player.runs }}({{ player.balls }})</small>
+          <small>{{ player.run }}({{ player.balls }})</small>
         </div>
       </div>
     </div>
   </div>
-  <div class="float-right col">
+  <div class="float-right col" *ngIf="team && team.bowlers">
     <div *ngFor="let player of team.bowlers" class="row">
       <img
         src="../../../../assets/img/avtar/avatar2.png"
@@ -33,10 +33,10 @@
       />
       <div class="float-right ml-4">
         <div class="row text-nowrap">
-          <small>{{ player.playerName }}</small>
+          <small>{{ player.name }}</small>
         </div>
         <div class="row">
-          <small>{{ player.runs }}/{{ player.wickets }} ({{ player.balls }})</small>
+          <small>{{ player.run }}/{{ player.wicket }} ({{ player.over }})</small>
         </div>
       </div>
     </div>

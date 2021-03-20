@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kp.MatchWinner.DbMigrator",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kp.MatchWinner.HttpApi.Host", "src\Kp.MatchWinner.HttpApi.Host\Kp.MatchWinner.HttpApi.Host.csproj", "{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.MatchWinner.WebScrapperConsole", "src\KP.MatchWinner.WebScrapperConsole\KP.MatchWinner.WebScrapperConsole.csproj", "{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{EF480016-9127-4916-8735-D2466BDBC582} = {04DBDB01-70F4-4E06-B468-8F87850B22BE}
 		{AA94D832-1CCC-4715-95A9-A483F23A1A5D} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 		{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
+		{EE44E7CF-1AB3-48E1-BB5C-C7889C19B2BD} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28315BFD-90E7-4E14-A2EA-F3D23AF4126F}

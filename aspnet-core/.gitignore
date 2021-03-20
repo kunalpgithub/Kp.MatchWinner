@@ -251,10 +251,5 @@ paket-files/
 .idea/
 *.sln.iml
 
-# MatchWinner
-src/Kp.MatchWinner.Web/Logs/*
-src/Kp.MatchWinner.Web.Host/Logs/*
-src/Kp.MatchWinner.IdentityServer/Logs/*
-src/Kp.MatchWinner.HttpApi.Host/Logs/*
-src/Kp.MatchWinner.HttpApi.Host/Logs/*
-src/Kp.MatchWinner.DbMigrator/Logs/*
+# WebScrapperConsole
+src/KP.MatchWinner.WebScrapperConsole.ConsoleApp/Logs/logs.txt

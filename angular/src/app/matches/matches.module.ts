@@ -7,7 +7,6 @@ import { MatchesComponent } from './matches.component';
 import { TeamScoreComponent } from './component/team-score/team-score.component';
 import { PlayerBattleComponent } from './component/player-battle/player-battle.component';
 import { MatchAnalysisComponent } from './component/match-analysis/match-analysis.component';
-import { MatchDataComponent } from './match-data/match-data.component';
 import { MatchScoreComponent } from './component/match-score/match-score.component';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { MatchScoreComponent } from './component/match-score/match-score.compone
     TeamScoreComponent,
     PlayerBattleComponent,
     MatchAnalysisComponent,
-    MatchDataComponent,
     MatchScoreComponent,
   ],
   imports: [

@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Matches\**" />
+    <Compile Remove="MatchReport\**" />
+    <Compile Remove="Schedules\**" />
+    <EmbeddedResource Remove="Matches\**" />
+    <EmbeddedResource Remove="MatchReport\**" />
+    <EmbeddedResource Remove="Schedules\**" />
+    <None Remove="Matches\**" />
+    <None Remove="MatchReport\**" />
+    <None Remove="Schedules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Kp.MatchWinner.Domain.Shared\Kp.MatchWinner.Domain.Shared.csproj" />
   </ItemGroup>
 

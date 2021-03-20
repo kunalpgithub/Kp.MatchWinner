@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatchService } from '@proxy';
-import { MatchScoreDto, PlayerBattleDto } from '@proxy/matches';
+import { TournamentMatchDto } from '@proxy/match-admin';
+import { MatchAnalysisService } from '@proxy/match-analysis';
+
+// import { MatchService } from '@proxy';
+// import { MatchScoreDto, PlayerBattleDto } from '@proxy/matches';
 
 @Component({
   selector: 'app-match-analysis',
@@ -8,12 +11,13 @@ import { MatchScoreDto, PlayerBattleDto } from '@proxy/matches';
   styleUrls: ['./match-analysis.component.scss'],
 })
 export class MatchAnalysisComponent implements OnInit {
-  constructor(private matchService: MatchService) {}
+  constructor(private _matchAnalysisService: MatchAnalysisService) {}
 
-  matchScores: MatchScoreDto[];
-  homeMatchScores: MatchScoreDto[];
-  visitorMatchScores: MatchScoreDto[];
-  playerBattles: PlayerBattleDto[];
+  matchScores: TournamentMatchDto[];
+  homeMatchScores: TournamentMatchDto[];
+  visitorMatchScores: TournamentMatchDto[];
+  matchesAtVenue: TournamentMatchDto[];
+  // playerBattles: PlayerBattleDto[];
   @Input() homeTeam: string;
   @Input() visitorTeam: string;
   @Input() location: string;
@@ -23,18 +27,30 @@ export class MatchAnalysisComponent implements OnInit {
   }
 
   getScores(): void {
-    this.matchService
-      .getMatchAnalysisByTeamNameAndOpponentTeamAndVenue(
+    this._matchAnalysisService
+      .getMatchAnalysisByHomeTeamAndVisitorTeamAndVenue(
         this.homeTeam,
         this.visitorTeam,
-        this.location.split(',')[0]
+        this.location
       )
       .subscribe(response => {
-        this.matchScores = response.matchScores;
-        this.playerBattles = response.playerBattles;
-        this.homeMatchScores = response.homeTeamVenueMatchScores;
-        this.visitorMatchScores = response.visitorTeamVenueMatchScores;
+        this.matchScores = response.matchBetweenTeam;
+        this.homeMatchScores = response.matchByTeam;
+        this.visitorMatchScores = response.matchAgainstTeam;
+        this.matchesAtVenue = response.matchAtVenue;
       });
+    // this.matchService
+    //   .getMatchAnalysisByTeamNameAndOpponentTeamAndVenue(
+    //     this.homeTeam,
+    //     this.visitorTeam,
+    //     this.location.split(',')[0]
+    //   )
+    //   .subscribe(response => {
+    //     this.matchScores = response.matchScores;
+    //     this.playerBattles = response.playerBattles;
+    //     this.homeMatchScores = response.homeTeamVenueMatchScores;
+    //     this.visitorMatchScores = response.visitorTeamVenueMatchScores;
+    //   });
     // this.matchService.getMatchScoreByTeamName(this.selectedTeam)
   }
 }

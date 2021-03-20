@@ -7,15 +7,15 @@ using Volo.Abp.Application.Dtos;
 
 namespace Kp.MatchWinner.Matches
 {
-    public class MatchDto: AuditedEntityDto<Guid>
-    {
-        public TeamScoreDto HostTeam { get; set; }
-        public TeamScoreDto VisitorTeam { get; set; }
-        public string Venue { get; set; }
-        public string City { get; set; }
-        public DateTime MatchDate { get; set; }
-    }
-    public class MatchScoreDto 
+    //public class MatchDto 
+    //{
+    //    public TeamScoreDto HostTeam { get; set; }
+    //    public TeamScoreDto VisitorTeam { get; set; }
+    //    public string Venue { get; set; }
+    //    public string City { get; set; }
+    //    public DateTime MatchDate { get; set; }
+    //}
+    public class MatchScoreDto : AuditedEntityDto<Guid>
     {
         public TeamScoreDto HostTeam { get; set; }
         public TeamScoreDto VisitorTeam { get; set; }

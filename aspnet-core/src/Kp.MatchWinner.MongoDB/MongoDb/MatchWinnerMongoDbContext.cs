@@ -2,8 +2,9 @@
 using Kp.MatchWinner.Users;
 using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
-using Kp.MatchWinner.Matches;
-using Kp.MatchWinner.Schedules;
+//using Kp.MatchWinner.Matches;
+//using Kp.MatchWinner.Schedules;
+using Kp.MatchWinner.MatchAdmin;
 
 namespace Kp.MatchWinner.MongoDB
 {
@@ -11,8 +12,12 @@ namespace Kp.MatchWinner.MongoDB
     public class MatchWinnerMongoDbContext : AbpMongoDbContext
     {
         public IMongoCollection<AppUser> Users => Collection<AppUser>();
-        public IMongoCollection<Match> Matches => Collection<Match>();
-        public IMongoCollection<Schedule> Schedules => Collection<Schedule>();
+        //public IMongoCollection<Match> Matches => Collection<Match>();
+        //public IMongoCollection<Schedule> Schedules => Collection<Schedule>();
+
+        public IMongoCollection<Tournament> Tournaments => Collection<Tournament>();
+        public IMongoCollection<TournamentMatch> TournamentMatches => Collection<TournamentMatch>();
+        
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

@@ -9,15 +9,15 @@
     type="light"
     style="width: 100%"
   >
-    <ng-container *ngFor="let schedule of schedules; let i = index">
+    <ng-container *ngFor="let schedule of tournamentMatches; let i = index">
       <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}">
         <ng-template ngbPanelHeader>
           <!-- <div class="row"></div> -->
           <div class="float-left">
             <h5>Match {{ i + 1 }} {{ schedule.homeTeam }} vs {{ schedule.visitorTeam }}</h5>
             <p>
-              <small>{{ schedule.location }},</small>
-              <small>{{ schedule.startDate | date }}</small>
+              <small>{{ schedule.venue }},</small>
+              <small>{{ schedule.playedOn | date }}</small>
             </p>
           </div>
 
@@ -36,13 +36,13 @@
         </ng-template>
         <ng-template ngbPanelContent>
           <app-match-analysis
-            *ngIf="schedule.showAnalysis"
             [homeTeam]="schedule.homeTeam"
             [visitorTeam]="schedule.visitorTeam"
-            [location]="schedule.location"
+            [location]="schedule.venue"
           ></app-match-analysis>
         </ng-template>
       </ngb-panel>
     </ng-container>
   </ngb-accordion>
 </div>
+<!-- *ngIf="schedule.showAnalysis" -->

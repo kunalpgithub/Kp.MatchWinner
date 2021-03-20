@@ -7,23 +7,21 @@
       style="max-width: 365px"
     >
       <div class="card-header">
-        <h6>{{ matchScore.hostTeam.team }} vs {{ matchScore.visitorTeam.team }}</h6>
-        <small>
-          {{ matchScore.venue }}, {{ matchScore.city }} {{ matchScore.matchDate | date }}</small
-        >
+        <h6>{{ matchScore.homeTeam }} vs {{ matchScore.visitorTeam }}</h6>
+        <small> {{ matchScore.venue }}, {{ matchScore.playedOn | date }}</small>
       </div>
       <div class="card-body">
         <app-team-score
-          *ngIf="showTeam == '' || showTeam == matchScore.hostTeam.team"
-          [team]="matchScore.hostTeam"
+          *ngIf="showTeam == '' || showTeam == matchScore.homeTeam"
+          [team]="matchScore.homeTeamScoreCard"
+          [teamName]="matchScore.homeTeam"
         ></app-team-score>
         <app-team-score
-          *ngIf="showTeam == '' || showTeam == matchScore.visitorTeam.team"
-          [team]="matchScore.visitorTeam"
+          *ngIf="showTeam == '' || showTeam == matchScore.visitorTeam"
+          [teamName]="matchScore.visitorTeam"
+          [team]="matchScore.visitorTeamScoreCard"
         ></app-team-score>
       </div>
-      <!-- <div class="card-footer">That's all for this match.</div> -->
     </div>
-    <!-- <div class="row">&nbsp;</div> -->
   </ng-container>
 </div>

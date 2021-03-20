@@ -5,15 +5,16 @@
       <app-match-score [matchScores]="matchScores"></app-match-score>
     </ng-template>
   </li>
-  <li ngbNavItem>
+  <!--<li ngbNavItem>
     <a ngbNavLink>Player Battle</a>
-    <ng-template ngbNavContent
-      ><app-player-battle
+    <ng-template ngbNavContent>
+       <app-player-battle
         *ngIf="playerBattles && playerBattles.length > 0"
         [playerBattles]="playerBattles"
       ></app-player-battle
-    ></ng-template>
-  </li>
+      ></ng-template
+    >
+  </li>-->
   <li ngbNavItem>
     <a ngbNavLink>Ground Battle</a>
     <ng-template ngbNavContent>
@@ -29,8 +30,8 @@
         </li>
         <li ngbNavItem>
           <a ngbNavLink>{{ visitorTeam }}</a>
-          <ng-template ngbNavContent
-            ><app-match-score
+          <ng-template ngbNavContent>
+            <app-match-score
               [showTeam]="visitorTeam"
               [matchScores]="visitorMatchScores"
             ></app-match-score>
