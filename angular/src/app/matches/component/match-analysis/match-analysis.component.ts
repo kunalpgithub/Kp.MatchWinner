@@ -16,7 +16,8 @@ export class MatchAnalysisComponent implements OnInit {
   matchScores: TournamentMatchDto[];
   homeMatchScores: TournamentMatchDto[];
   visitorMatchScores: TournamentMatchDto[];
-  matchesAtVenue: TournamentMatchDto[];
+  homeTeamAtVenue: TournamentMatchDto[];
+  visitorTeamAtVenue: TournamentMatchDto[];
   // playerBattles: PlayerBattleDto[];
   @Input() homeTeam: string;
   @Input() visitorTeam: string;
@@ -37,7 +38,8 @@ export class MatchAnalysisComponent implements OnInit {
         this.matchScores = response.matchBetweenTeam;
         this.homeMatchScores = response.matchByTeam;
         this.visitorMatchScores = response.matchAgainstTeam;
-        this.matchesAtVenue = response.matchAtVenue;
+        this.homeTeamAtVenue = response.homeTeamAtVenue;
+        this.visitorTeamAtVenue = response.visitorTeamAtVenue;
       });
     // this.matchService
     //   .getMatchAnalysisByTeamNameAndOpponentTeamAndVenue(

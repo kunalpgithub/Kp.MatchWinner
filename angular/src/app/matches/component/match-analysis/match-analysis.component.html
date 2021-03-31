@@ -16,7 +16,7 @@
     >
   </li>-->
   <li ngbNavItem>
-    <a ngbNavLink>Ground Battle</a>
+    <a ngbNavLink>Recent Matches</a>
     <ng-template ngbNavContent>
       <ul ngbNav #nav2="ngbNav" class="nav-tabs">
         <li ngbNavItem>
@@ -34,6 +34,32 @@
             <app-match-score
               [showTeam]="visitorTeam"
               [matchScores]="visitorMatchScores"
+            ></app-match-score>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav2" class="p-2"></div>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Ground Battle</a>
+    <ng-template ngbNavContent>
+      <ul ngbNav #nav2="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a ngbNavLink>{{ homeTeam }}</a>
+          <ng-template ngbNavContent>
+            <app-match-score
+              [showTeam]="homeTeam"
+              [matchScores]="homeTeamAtVenue"
+            ></app-match-score>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <a ngbNavLink>{{ visitorTeam }}</a>
+          <ng-template ngbNavContent>
+            <app-match-score
+              [showTeam]="visitorTeam"
+              [matchScores]="visitorTeamAtVenue"
             ></app-match-score>
           </ng-template>
         </li>

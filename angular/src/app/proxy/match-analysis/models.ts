@@ -4,5 +4,6 @@ export interface MatchAnalysisReport {
   matchByTeam: TournamentMatchDto[];
   matchAgainstTeam: TournamentMatchDto[];
   matchBetweenTeam: TournamentMatchDto[];
-  matchAtVenue: TournamentMatchDto[];
+  homeTeamAtVenue: TournamentMatchDto[];
+  visitorTeamAtVenue: TournamentMatchDto[];
 }

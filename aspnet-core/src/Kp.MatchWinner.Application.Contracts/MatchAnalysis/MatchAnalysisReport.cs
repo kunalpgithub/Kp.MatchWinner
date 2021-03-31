@@ -12,6 +12,8 @@ namespace Kp.MatchWinner.MatchAnalysis
         public List<TournamentMatchDto> MatchByTeam { get; set; }
         public List<TournamentMatchDto> MatchAgainstTeam { get; set; }
         public List<TournamentMatchDto> MatchBetweenTeam { get; set; }
-        public List<TournamentMatchDto> MatchAtVenue { get; set; }
+        public List<TournamentMatchDto> HomeTeamAtVenue { get; set; }
+        public List<TournamentMatchDto> VisitorTeamAtVenue { get; set; }
+
     }
 }
