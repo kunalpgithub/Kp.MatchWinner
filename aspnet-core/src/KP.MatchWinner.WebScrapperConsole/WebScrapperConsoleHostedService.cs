@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Kp.MatchWinner.MatchAdmin;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp;
+using Volo.Abp.ObjectMapping;
 
 namespace KP.MatchWinner.WebScrapperConsole
 {
@@ -15,6 +18,7 @@ namespace KP.MatchWinner.WebScrapperConsole
         private readonly ITournamentService _tournamentService;
         private readonly ITournamentMatchService _tournamentMatchService;
         private readonly WebScrapperService _webScrapperService;
+        //private readonly IObjectMapper _objectMapper;
 
 
         public WebScrapperConsoleHostedService(
@@ -23,6 +27,7 @@ namespace KP.MatchWinner.WebScrapperConsole
             WebScrapperService webScrapperService
             , ITournamentService tournamentService
             , ITournamentMatchService tournamentMatchService
+            //,IObjectMapper objectMapper
             )
         {
             _application = application;
@@ -30,13 +35,15 @@ namespace KP.MatchWinner.WebScrapperConsole
             _webScrapperService = webScrapperService;
             _tournamentService = tournamentService;
             _tournamentMatchService = tournamentMatchService;
+            //_objectMapper = objectMapper;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _application.Initialize(_serviceProvider);
-            await ScrapOldTournament();
-            //await ScrapCurrentTournament();
+            //await ScrapOldTournament();
+
+            await UploadFixture();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -55,21 +62,34 @@ namespace KP.MatchWinner.WebScrapperConsole
             {
                 bool isLastTournament = j == tournamentList.Count - 1;
                 var tournament = tournamentList[j];
-                Console.WriteLine($"Fetching {tournament.TournamentName} - Season {tournament.Season}");
-                var schedules = _webScrapperService.BrowseSchedule(tournament, true);
-                Console.WriteLine($"Fetched schedules {schedules.Count}");
-                await GetScoreCard(schedules, isLastTournament);
-                tournament.IsAvailable = true;
-                await _tournamentService.UpdateAsync(tournament.Id, tournament);
+
+                for (int s = 0; s < tournament.Seasons.Count(); s++)
+                {
+                    var season = tournament.Seasons.ElementAt(s);
+                    bool isLastSeason = s == tournament.Seasons.Count() - 1;
+                    Console.WriteLine("==============================================================");
+                    Console.WriteLine($"Fetching {tournament.TournamentName} - Season {season.Season}");
+                    Console.WriteLine("==============================================================");
+                    Console.WriteLine();
+
+                    var schedules = _webScrapperService.BrowseSchedule(tournament, season.Season, true);
+                    Console.WriteLine("**************************************************************");
+                    Console.WriteLine($"Fetched schedules {schedules.Count}");
+                    Console.WriteLine("**************************************************************");
+                    Console.WriteLine();
+
+                    await GetScoreCard(schedules, isLastTournament && isLastSeason);
+                    Console.WriteLine("**************************************************************");
+                    Console.WriteLine($"Fetched score card for matches {schedules.Count}");
+                    Console.WriteLine("**************************************************************");
+                    Console.WriteLine();
+                    season.IsAvailable = true;
+                    await _tournamentService.UpdateAsync(tournament.Id, tournament);
+                }
             }
         }
 
-        private async Task ScrapCurrentTournament()
-        {
-            var tournament = await _tournamentService.CreateAsync(new TournamentDto { TournamentName = "Pakistan Super League", Season = "2021" });
-            var schedules = _webScrapperService.BrowseSchedule(tournament, true,"https://www.espncricinfo.com/ci/engine/series/index.html?view=month");
-            await GetScoreCard(schedules, true);
-        }
+
 
         private async Task GetScoreCard(List<TournamentMatchDto> tournamentMatches, bool isLastTournament)
         {
@@ -84,12 +104,39 @@ namespace KP.MatchWinner.WebScrapperConsole
                     tournamentMatches[i].HasScoreCard = true;
                     await _webScrapperService.BrowseScore(tournamentMatches[i], !(isLastTournament && isLastMatch));
                 }
-                else {
+                else
+                {
                     tournamentMatches[i].HasBallByBall = false;
                     tournamentMatches[i].HasScoreCard = false;
                 }
                 await _tournamentMatchService.CreateAsync(tournamentMatches[i]);
+                Console.Write($" {tournamentMatches[i].Season } Score card for {tournamentMatches[i].HomeTeam} vs {tournamentMatches[i].VisitorTeam}");
             }
+        }
+
+        private async Task UploadFixture()
+        {
+            Guid id = new Guid(Convert.FromBase64String("qu6lQ1b3A5l90zn7YVHEhg=="));
+            var tournament = await _tournamentService.GetAsync(id);
+
+            string text = System.IO.File.ReadAllText(@"C:\Users\kunal\Downloads\ipl-2021-events.ics");
+            var calendar = Ical.Net.Calendar.Load(text);
+            //List<TournamentMatchDto> matches = new List<TournamentMatchDto>();
+            foreach (var evnt in calendar.Events)
+            {
+                var match = new TournamentMatchDto();
+                var teams = evnt.Summary.Split(" v ");
+                match.HomeTeam = teams[0][(teams[0].IndexOf("Match ") + "Match ".Length)..];
+                match.VisitorTeam = teams[1];
+                match.ScoreCardUrl = evnt.Description[(evnt.Description.IndexOf(": ") + 2)..];
+                match.Venue = evnt.Location;
+                match.PlayedDate = evnt.DtStart.Date;
+                match.Season = "2021";
+                match.TournamentId = tournament.Id;
+                await _tournamentMatchService.CreateAsync(match);
+                //matches.Add(match);
+            }
+            Console.WriteLine("Fixture uploaded successfully.");
         }
     }
 }

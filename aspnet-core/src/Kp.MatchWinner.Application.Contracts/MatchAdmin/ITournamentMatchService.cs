@@ -10,6 +10,6 @@ namespace Kp.MatchWinner.MatchAdmin
 {
     public interface ITournamentMatchService : ICrudAppService<TournamentMatchDto, Guid, PagedAndSortedResultRequestDto, TournamentMatchDto, TournamentMatchDto>
     {
-        public List<TournamentMatchDto> GetMatchesByTournament(Guid TournamentId);
+        public List<TournamentMatchDto> GetMatches(Guid TournamentId,string Season);
     }
 }

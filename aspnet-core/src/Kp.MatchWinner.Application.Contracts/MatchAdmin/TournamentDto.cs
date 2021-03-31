@@ -11,7 +11,13 @@ namespace Kp.MatchWinner.MatchAdmin
     public class TournamentDto : FullAuditedEntityDto<Guid>
     {
         public string TournamentName { get; set; }
+        public IEnumerable<TournamentSeasonDto> Seasons { get; set; }
+    }
+
+    public class TournamentSeasonDto
+    {
         public string Season { get; set; }
         public bool IsAvailable { get; set; }
+
     }
 }

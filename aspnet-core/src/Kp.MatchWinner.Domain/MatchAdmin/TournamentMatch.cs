@@ -21,6 +21,7 @@ namespace Kp.MatchWinner.MatchAdmin
         public bool HasScore { get; set; }
         public bool HasBallByBall { get; set; }
         public Guid TournamentId { get; set; }
+        public string Season { get; set; }
         public TeamScore HomeTeamScoreCard { get; set; }
         public TeamScore VisitorTeamScoreCard { get; set; }
     }

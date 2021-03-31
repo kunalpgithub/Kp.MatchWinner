@@ -21,7 +21,8 @@ namespace Kp.MatchWinner.MatchAnalysis
         {
 
             //Get last 5 matches played by team.
-            var allMatchesByTeam = _tournamentMatchRepo.Where(x => x.HomeTeam == homeTeam || x.HomeTeam == visitorTeam).OrderBy(x=>x.PlayedDate).AsQueryable();
+            //.Where(x => x.HomeTeamScore != null && x.VisitorTeamScore != null)
+            var allMatchesByTeam = _tournamentMatchRepo.Where(x => x.HomeTeamScoreCard != null  && x.VisitorTeamScoreCard != null).OrderByDescending(x=>x.PlayedDate).AsQueryable();
 
             var matchesAgainstTeam = allMatchesByTeam.Where(x => x.VisitorTeam == visitorTeam || x.HomeTeam == visitorTeam).Take(5);
             var matchesByTeam = allMatchesByTeam.Where(x => x.VisitorTeam == homeTeam || x.HomeTeam == homeTeam).Take(5);

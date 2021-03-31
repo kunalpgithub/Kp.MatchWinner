@@ -9,12 +9,17 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Kp.MatchWinner.MatchAdmin
 {
-    public class Tournament: FullAuditedEntity<Guid>
+    public class Tournament : FullAuditedEntity<Guid>
     {
         public string TournamentName { get; set; }
+        public IEnumerable<TournamentSeason> Seasons { get; set; }
+    }
+
+    public class TournamentSeason
+    {
         public string Season { get; set; }
         public bool IsAvailable { get; set; }
-        //public List<MatchSchedule> MatchSchedules { get; set; }
+
     }
 
     public class TournamentComparer : IEqualityComparer<Tournament>
@@ -25,8 +30,10 @@ namespace Kp.MatchWinner.MatchAdmin
 
             if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null)) return false;
 
-            return x.TournamentName == y.TournamentName && x.Season == y.Season;
-            
+        
+            return x.TournamentName == y.TournamentName;
+            //&& x.Seasons.Any(s => y.Seasons.Any(ys => ys != s));
+
         }
 
         public int GetHashCode([DisallowNull] Tournament obj)
@@ -35,13 +42,14 @@ namespace Kp.MatchWinner.MatchAdmin
             if (Object.ReferenceEquals(obj, null)) return 0;
 
             //Get hash code for the Name field if it is not null.
-            int hashProductName = obj.TournamentName == null ? 0 : obj.TournamentName.GetHashCode();
+            int hashTournamentName = obj.TournamentName == null ? 0 : obj.TournamentName.GetHashCode();
 
             //Get hash code for the Code field.
-            int hashProductCode = obj.Season == null?0 : obj.Season.GetHashCode();
+            //int hashTournamentSeason = obj.Seasons == null ? 0 : obj.Seasons.GetHashCode();
 
             //Calculate the hash code for the product.
-            return hashProductName ^ hashProductCode;
+            return hashTournamentName; 
+                //^ hashTournamentSeason;
         }
     }
 }

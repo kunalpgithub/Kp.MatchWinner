@@ -39,10 +39,11 @@ export class TournamentMatchService {
     },
     { apiName: this.apiName });
 
-  getMatchesByTournamentByTournamentId = (tournamentId: string) =>
+  getMatchesByTournamentIdAndSeason = (tournamentId: string, season: string) =>
     this.restService.request<any, TournamentMatchDto[]>({
       method: 'GET',
-      url: `/api/app/tournamentMatch/matchesByTournament/${tournamentId}`,
+      url: `/api/app/tournamentMatch/matches/${tournamentId}`,
+      params: { season: season },
     },
     { apiName: this.apiName });
 

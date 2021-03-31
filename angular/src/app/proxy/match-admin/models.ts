@@ -23,8 +23,7 @@ export interface TeamScoreDto {
 
 export interface TournamentDto extends FullAuditedEntityDto<string> {
   tournamentName: string;
-  season: string;
-  isAvailable: boolean;
+  seasons: TournamentSeasonDto[];
 }
 
 export interface TournamentMatchDto extends FullAuditedEntityDto<string> {
@@ -33,6 +32,7 @@ export interface TournamentMatchDto extends FullAuditedEntityDto<string> {
   visitorTeam: string;
   visitorTeamScore: string;
   playedOn: string;
+  playedDate: string;
   venue: string;
   scoreCardUrl: string;
   winner: string;
@@ -41,4 +41,10 @@ export interface TournamentMatchDto extends FullAuditedEntityDto<string> {
   visitorTeamScoreCard: TeamScoreDto;
   hasScoreCard: boolean;
   hasBallByBall: boolean;
+  season: string;
+}
+
+export interface TournamentSeasonDto {
+  season: string;
+  isAvailable: boolean;
 }

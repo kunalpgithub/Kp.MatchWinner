@@ -45,7 +45,11 @@ namespace KP.MatchWinner.WebScrapperConsole
 
                 options.AddArgument("--blink-settings=imagesEnabled=false");
                 options.AddArgument("disable-gpu");
-                _driver = new EdgeDriver(DRIVER_PATH, options);
+               EdgeDriverService service = EdgeDriverService.CreateChromiumService(DRIVER_PATH);
+                service.SuppressInitialDiagnosticInformation = true;
+                service.HideCommandPromptWindow = true;
+                _driver = new EdgeDriver(service, options);
+                
                 _driver.Manage().Window.Maximize();
             }
 
@@ -59,12 +63,12 @@ namespace KP.MatchWinner.WebScrapperConsole
                 _driver.Quit();
             }
         }
-        public List<TournamentMatchDto> BrowseSchedule(TournamentDto tournament, bool KeepBowserOpen = false, string url = "")
+        public List<TournamentMatchDto> BrowseSchedule(TournamentDto tournament,string season, bool KeepBowserOpen = false, string url = "")
         {
             OpenBrowser();
             if (string.IsNullOrEmpty(url))
             {
-                _driver.Url = $"https://www.espncricinfo.com/ci/engine/series/index.html?season={tournament.Season};view=season";
+                _driver.Url = $"https://www.espncricinfo.com/ci/engine/series/index.html?season={season};view=season";
             }
             else
             {
@@ -97,7 +101,16 @@ namespace KP.MatchWinner.WebScrapperConsole
                 }
                 return true;
             });
-            wait.Until(waitForElement);
+            try
+            {
+                wait.Until(waitForElement);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
             //Read score card links.
             var matches = _driver.FindElements(By.CssSelector("section.matches-day-block>section"));
 
@@ -106,7 +119,7 @@ namespace KP.MatchWinner.WebScrapperConsole
             {
                 string date = match.FindElement(By.CssSelector("div.match-info>span.bold")).Text;
                 string venue = match.FindElement(By.CssSelector("div.match-info>span.match-no>a")).Text;
-                var startIndex = venue.IndexOf("Match at") + "Match at".Length;
+                var startIndex = venue.IndexOf("Match at",StringComparison.InvariantCultureIgnoreCase) + "Match at".Length;
                 var lastIndex = venue.IndexOf("(") != -1 ? venue.IndexOf("(") : venue.Length - 1;
                 string homeTeamScore = match.FindElement(By.CssSelector("div.innings-info-1>span")).Text;
                 string homeTeam = match.FindElement(By.CssSelector("div.innings-info-1")).Text;
@@ -133,11 +146,15 @@ namespace KP.MatchWinner.WebScrapperConsole
                     VisitorTeam = string.IsNullOrEmpty(visitorTeamScore) ? visitorTeam : visitorTeam.Replace(visitorTeamScore, "").Trim(),
                     VisitorTeamScore = visitorTeamScore.Trim(),
                     PlayedOn = date,
+                    PlayedDate = DateTime.Parse(date),
                     ScoreCardUrl = scoreLink,
                     Venue = venue[startIndex..lastIndex],
                     Winner = matchStatus,
-                    TournamentId = tournament.Id
+                    TournamentId = tournament.Id,
+                    Season = season
+
                 });
+                Console.WriteLine($"{tournament.Id} -{season}-{homeTeam}-{visitorTeam}-{venue}");
 
             }
             if (!KeepBowserOpen)
@@ -158,25 +175,11 @@ namespace KP.MatchWinner.WebScrapperConsole
             var matchHeader = document.QuerySelector("div.match-header");
             var teams = matchHeader.QuerySelectorAll("p.name");
 
-            //foreach (var item in teams)
-            //{
-            //    Console.WriteLine(item.TextContent);
-            //}
-            //matchHeader.Where(m => m.LocalName == "p" && m.ClassList.Contains("name")).Select(x => x.TextContent);
-            //matchHeader.Children.Where(m => m.LocalName == "span" && m.ClassList.Contains("score")).Select(x => x.TextContent);
-            //var score = matchHeader.QuerySelectorAll("span.score");
-            //foreach (var item in score)
-            //{
-            //    Console.WriteLine(item.TextContent);
-            //}
-            //tournamentMatch.HomeTeamScoreCard.Name = teams[0].TextContent.Trim();
-            //tournamentMatch.HomeTeamScoreCard.Score = score[0].TextContent.Trim();
-            //tournamentMatch.VisitorTeamScoreCard.Name = teams[1].TextContent.Trim();
-            //tournamentMatch.VisitorTeamScoreCard.Score = score[1].TextContent.Trim();
-
             var scoreCards = document.QuerySelectorAll("div.card.content-block.match-scorecard-table");
-            tournamentMatch.HomeTeamScoreCard = ParseScoreCard(scoreCards[0]);
-            tournamentMatch.VisitorTeamScoreCard = ParseScoreCard(scoreCards[1]);
+            var FirstInning = ParseScoreCard(scoreCards[0]);
+            var SecondInning = ParseScoreCard(scoreCards[1]);
+            tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
+            tournamentMatch.VisitorTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
             return tournamentMatch;
         }
 
@@ -225,5 +228,6 @@ namespace KP.MatchWinner.WebScrapperConsole
             }
             return tm;
         }
+
     }
 }

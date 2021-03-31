@@ -19,8 +19,17 @@ namespace Kp.MatchWinner.MatchAdmin
 
         public List<TournamentDto> GetTournamnetByAvailability(bool isAvailable)
         {
-             var tournaments = _tournamentRepo.Where(x => x.IsAvailable == isAvailable).ToList();
-            return ObjectMapper.Map<List<Tournament>, List<TournamentDto>>(tournaments);
+            var tournaments = _tournamentRepo.WhereIf(true, x => x.Seasons.Any(s => !s.IsAvailable))
+                .Select(t => new TournamentDto {
+                    Id = t.Id,
+                    TournamentName = t.TournamentName,
+                    Seasons = t.Seasons.Where(s => !s.IsAvailable).Select(s => new TournamentSeasonDto {
+                        Season = s.Season,
+                        IsAvailable = s.IsAvailable
+                    })
+                }).ToList();
+            //return ObjectMapper.Map<List<Tournament>, List<TournamentDto>>(tournaments);
+            return tournaments;
         }
     }
 }

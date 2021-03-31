@@ -19,9 +19,9 @@ export class MatchesComponent implements OnInit {
    */
   constructor(private tournamentMatchService: TournamentMatchService) {}
   ngOnInit(): void {
-    const tournamentId = '6465ab5e-8a30-d26a-22ec-39fad4fda0ce'; // e4102db3-45d8-112d-a247-39fad618aea6
+    const tournamentId = '43a5eeaa-f756-9903-7dd3-39fb6151c486'; // e4102db3-45d8-112d-a247-39fad618aea6
     this.tournamentMatchService
-      .getMatchesByTournamentByTournamentId(tournamentId)
+      .getMatchesByTournamentIdAndSeason(tournamentId, '2021')
       .subscribe(response => {
         this.tournamentMatches = response;
       });

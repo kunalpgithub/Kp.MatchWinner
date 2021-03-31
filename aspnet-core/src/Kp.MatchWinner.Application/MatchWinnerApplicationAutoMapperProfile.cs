@@ -22,6 +22,7 @@ namespace Kp.MatchWinner
 
             //MatchAdmin entity mapping.
             CreateMap<Tournament, TournamentDto>().ReverseMap();
+            CreateMap<TournamentSeason, TournamentSeasonDto>().ReverseMap();
             CreateMap<TournamentMatch, TournamentMatchDto>().ReverseMap().ForMember(x=>x.PlayedDate,opt=>opt.MapFrom(x=>DateTime.Parse(x.PlayedOn))); ;
             CreateMap<TournamentMatch, TournamentMatchDto>().ReverseMap(); ;
             CreateMap<MatchAdmin.TeamScore, MatchAdmin.TeamScoreDto>().ReverseMap(); ;

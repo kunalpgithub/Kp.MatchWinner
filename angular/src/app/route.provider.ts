@@ -15,13 +15,13 @@ function configureRoutes(routes: RoutesService) {
         order: 1,
         layout: eLayoutType.application,
       },
-      {
-        path: '/Matches',
-        name: '::Menu:MatchAdmin',
-        iconClass: 'fas fa-book',
-        order: 2,
-        layout: eLayoutType.application,
-      },
+      // {
+      //   path: '/Matches',
+      //   name: '::Menu:MatchAdmin',
+      //   iconClass: 'fas fa-book',
+      //   order: 2,
+      //   layout: eLayoutType.application,
+      // },
       // {
       //   path: '/Match',
       //   name: '::Menu:Matches',
@@ -29,22 +29,22 @@ function configureRoutes(routes: RoutesService) {
       //   order: 2,
       //   layout: eLayoutType.application,
       // },
-      {
-        path: '/Match/MatchData',
-        name: '::Menu:MatchData',
-        iconClass: 'fas fa-book',
-        order: 2,
-        parentName: '::Menu:MatchAdmin',
-        layout: eLayoutType.application,
-      },
-      {
-        path: '/schedules',
-        name: '::Menu:Schedules',
-        iconClass: 'fas fa-book',
-        order: 3,
-        layout: eLayoutType.application,
-        // requiredPolicy: 'Matches.Schedules',
-      },
+      // {
+      //   path: '/Match/MatchData',
+      //   name: '::Menu:MatchData',
+      //   iconClass: 'fas fa-book',
+      //   order: 2,
+      //   parentName: '::Menu:MatchAdmin',
+      //   layout: eLayoutType.application,
+      // },
+      // {
+      //   path: '/schedules',
+      //   name: '::Menu:Schedules',
+      //   iconClass: 'fas fa-book',
+      //   order: 3,
+      //   layout: eLayoutType.application,
+      //   // requiredPolicy: 'Matches.Schedules',
+      // },
     ]);
   };
 }

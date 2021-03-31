@@ -18,9 +18,9 @@ namespace Kp.MatchWinner.MatchAdmin
             _tournamentMatchRepo = tournamentMatchRepo;
         }
 
-        public List<TournamentMatchDto> GetMatchesByTournament(Guid tournamentId)
+        public List<TournamentMatchDto> GetMatches(Guid tournamentId,string season)
         {
-            var matches = _tournamentMatchRepo.Where(x => x.TournamentId == tournamentId).ToList();
+            var matches = _tournamentMatchRepo.Where(x => x.TournamentId == tournamentId && x.Season == season ).ToList();
             return ObjectMapper.Map<List<TournamentMatch>, List<TournamentMatchDto>>(matches);
         }
     }

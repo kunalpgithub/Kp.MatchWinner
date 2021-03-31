@@ -15,6 +15,7 @@ namespace Kp.MatchWinner.MatchAdmin
         public string VisitorTeam { get; set; }
         public string VisitorTeamScore { get; set; }
         public string PlayedOn { get; set; }
+        public DateTime PlayedDate { get; set; }
         public string Venue { get; set; }
         public string ScoreCardUrl { get; set; }
         public string Winner { get; set; }
@@ -23,6 +24,7 @@ namespace Kp.MatchWinner.MatchAdmin
         public TeamScoreDto VisitorTeamScoreCard { get; set; }
         public bool HasScoreCard { get; set; }
         public bool HasBallByBall { get; set; }
+        public string Season { get; set; }
     }
 
 }

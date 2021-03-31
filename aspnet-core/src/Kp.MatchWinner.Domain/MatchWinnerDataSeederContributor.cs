@@ -18,7 +18,7 @@ namespace Kp.MatchWinner
         //private readonly IRepository<Match, Guid> _matchRepository;
         private readonly IRepository<Tournament, Guid> _tournamentRepo;
 
-        public MatchWinnerDataSeederContributor( IRepository<Tournament, Guid> tournamentRepo) //IRepository<Match, Guid> matchRepository,
+        public MatchWinnerDataSeederContributor(IRepository<Tournament, Guid> tournamentRepo) //IRepository<Match, Guid> matchRepository,
         {
             //_matchRepository = matchRepository;
             _tournamentRepo = tournamentRepo;
@@ -27,17 +27,25 @@ namespace Kp.MatchWinner
         public async Task SeedAsync(DataSeedContext context)
         {
             List<Tournament> tournamentList = new List<Tournament>() {
-                new Tournament() { TournamentName= "Indian Premier League", Season = "2020/21" },
-                new Tournament() { TournamentName = "Indian Premier League", Season = "2019" },
-                new Tournament() { TournamentName = "Indian Premier League", Season = "2018" },
-                new Tournament() { TournamentName = "Indian Premier League", Season = "2017" },
-                new Tournament() { TournamentName = "Indian Premier League", Season = "2016" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2015/16" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2016/17" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2017/18" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2018/19" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2019/20" },
-                new Tournament() { TournamentName = "Pakistan Super League", Season = "2020/21" },
+                new Tournament() { TournamentName= "Indian Premier League",
+                                    Seasons = new List<TournamentSeason>{
+                                        new TournamentSeason{ Season = "2016" },
+                                        new TournamentSeason{ Season = "2017" },
+                                        new TournamentSeason{ Season = "2018" },
+                                        new TournamentSeason{ Season = "2019" },
+                                        new TournamentSeason{ Season = "2020/21" },
+                                    }
+                },
+                new Tournament() { TournamentName= "Pakistan Super League",
+                                    Seasons = new List<TournamentSeason>{
+                                        new TournamentSeason{ Season = "2015/16" },
+                                        new TournamentSeason{ Season = "2016/17" },
+                                        new TournamentSeason{ Season = "2017/18" },
+                                        new TournamentSeason{ Season = "2018/19" },
+                                        new TournamentSeason{ Season = "2019/20" },
+                                        new TournamentSeason{ Season = "2020/21" },
+                                    }
+                }
             };
             //Pakistan Super League
             var dbTournamentList = await _tournamentRepo.GetListAsync();
@@ -45,25 +53,8 @@ namespace Kp.MatchWinner
 
             foreach (var item in newList)
             {
-               await _tournamentRepo.InsertAsync(item);
+                await _tournamentRepo.InsertAsync(item);
             }
-
-            //if (await _matchRepository.GetCountAsync() <= 0)
-            //{
-            //    var files = System.IO.Directory.GetFiles(@"C:\Users\kunal\OneDrive\Documents\ipl","*.yaml");
-            //    foreach (var file in files)
-            //    {
-            //        string yaml = System.IO.File.ReadAllText(file);
-            //        INamingConvention underScoredNaming = new UnderscoredNamingConvention();
-            //        var deserializer = new DeserializerBuilder()
-            //            .WithNamingConvention(underScoredNaming)
-            //            .Build();
-            //        var item = deserializer.Deserialize<Match>(yaml);
-            //        await _matchRepository.InsertAsync(item,autoSave:true);
-
-
-            //    }
-            //}
         }
     }
 }
