@@ -9,7 +9,7 @@ env:
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MatchWinner_1924 }}
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 5.0.x
-  WORKING_DIRECTORY: src\Kp.MatchWinner.HttpApi.Host
+  WORKING_DIRECTORY: src\Kp.MatchWinner.HttpApi.Host\Kp.MatchWinner.HttpApi.Host.cproj
 jobs:
   build-and-deploy:
     runs-on: windows-latest
