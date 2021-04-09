@@ -1,4 +1,4 @@
-import type { TournamentMatchDto } from './models';
+import type { CurrentTournamentDto, TournamentMatchDto } from './models';
 import { RestService } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -44,6 +44,13 @@ export class TournamentMatchService {
       method: 'GET',
       url: `/api/app/tournamentMatch/matches/${tournamentId}`,
       params: { season: season },
+    },
+    { apiName: this.apiName });
+
+  getRunningTournament = () =>
+    this.restService.request<any, CurrentTournamentDto[]>({
+      method: 'GET',
+      url: `/api/app/tournamentMatch/runningTournament`,
     },
     { apiName: this.apiName });
 

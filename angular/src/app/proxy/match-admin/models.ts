@@ -16,6 +16,12 @@ export interface BowlerDto {
   wicket: number;
 }
 
+export interface CurrentTournamentDto {
+  tournamentId: string;
+  tournamentName: string;
+  season: string;
+}
+
 export interface TeamScoreDto {
   batsmen: BatsManDto[];
   bowlers: BowlerDto[];
