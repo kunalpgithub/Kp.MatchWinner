@@ -1,6 +1,6 @@
 import { Config } from '@abp/ng.core';
 
-const baseUrl = 'http://localhost:4200';
+const baseUrl = 'https://crictics.azurewebsites.net';
 
 export const environment = {
   production: true,
@@ -10,7 +10,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44312',
+    issuer: 'https://matchwinner.azurewebsites.net',
     redirectUri: baseUrl,
     clientId: 'MatchWinner_App',
     responseType: 'code',
@@ -18,7 +18,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44312',
+      url: 'https://matchwinner.azurewebsites.net',
       rootNamespace: 'Kp.MatchWinner',
     },
   },

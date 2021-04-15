@@ -22,7 +22,7 @@ namespace Kp.MatchWinner.MatchAdmin
 
         public List<TournamentMatchDto> GetMatches(Guid tournamentId,string season)
         {
-            var matches = _tournamentMatchRepo.Where(x => x.TournamentId == tournamentId && x.Season == season ).ToList();
+            var matches = _tournamentMatchRepo.Where(x => x.TournamentId == tournamentId && x.Season == season ).OrderBy(x=>x.PlayedDate).ToList();
             return ObjectMapper.Map<List<TournamentMatch>, List<TournamentMatchDto>>(matches);
         }
 
@@ -46,6 +46,12 @@ namespace Kp.MatchWinner.MatchAdmin
                             Season = tmg.Key.Season
                         };
             return currentTournaments.ToList();
+        }
+
+        public List<TournamentMatchDto> GetDailyMatchForScrap() {
+
+            var matches = _tournamentMatchRepo.Where(x => x.HomeTeamScoreCard == null && x.VisitorTeamScoreCard == null && x.PlayedDate <= DateTime.Now.AddDays(-1));
+            return ObjectMapper.Map<List<TournamentMatch>, List<TournamentMatchDto>>(matches.ToList());
         }
     }
 }

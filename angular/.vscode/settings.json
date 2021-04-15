@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
         "matchscore"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/cfadbc48-a266-45a7-8d70-684f5d230503/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/crictics",
+    "appService.deploySubpath": "dist\\MatchWinner"
 }

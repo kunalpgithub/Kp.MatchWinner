@@ -27,6 +27,7 @@ namespace KP.MatchWinner.WebScrapperConsole
             WebScrapperService webScrapperService
             , ITournamentService tournamentService
             , ITournamentMatchService tournamentMatchService
+         
             //,IObjectMapper objectMapper
             )
         {
@@ -42,14 +43,13 @@ namespace KP.MatchWinner.WebScrapperConsole
         {
             _application.Initialize(_serviceProvider);
             //await ScrapOldTournament();
-
-            await UploadFixture();
+            await ScrapRunningTournament();
+            //await UploadFixture();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _application.Shutdown();
-
             return Task.CompletedTask;
         }
 
@@ -89,16 +89,13 @@ namespace KP.MatchWinner.WebScrapperConsole
             }
         }
 
-
-
         private async Task GetScoreCard(List<TournamentMatchDto> tournamentMatches, bool isLastTournament)
         {
             for (int i = 0; i < tournamentMatches.Count; i++)
             {
                 bool isLastMatch = i == tournamentMatches.Count - 1;
 
-                if (!string.IsNullOrEmpty(tournamentMatches[i].ScoreCardUrl) && tournamentMatches[i].Winner != "Match yet to begin" && !tournamentMatches[i].Winner.Contains("abandoned", StringComparison.InvariantCultureIgnoreCase) && !tournamentMatches[i].Winner.Contains("No result", StringComparison.InvariantCultureIgnoreCase))
-
+                if (!string.IsNullOrEmpty(tournamentMatches[i].ScoreCardUrl) && (tournamentMatches[i].Winner == null ||(tournamentMatches[i].Winner != null && tournamentMatches[i].Winner != "Match yet to begin" && !tournamentMatches[i].Winner.Contains("abandoned", StringComparison.InvariantCultureIgnoreCase) && !tournamentMatches[i].Winner.Contains("No result", StringComparison.InvariantCultureIgnoreCase))))
                 {
                     tournamentMatches[i].HasBallByBall = false;
                     tournamentMatches[i].HasScoreCard = true;
@@ -109,8 +106,15 @@ namespace KP.MatchWinner.WebScrapperConsole
                     tournamentMatches[i].HasBallByBall = false;
                     tournamentMatches[i].HasScoreCard = false;
                 }
-                await _tournamentMatchService.CreateAsync(tournamentMatches[i]);
-                Console.Write($" {tournamentMatches[i].Season } Score card for {tournamentMatches[i].HomeTeam} vs {tournamentMatches[i].VisitorTeam}");
+                if (tournamentMatches[i].Id == Guid.Empty)
+                {
+                    await _tournamentMatchService.CreateAsync(tournamentMatches[i]);
+                }
+                else
+                {
+                    await _tournamentMatchService.UpdateAsync(tournamentMatches[i].Id, tournamentMatches[i]);
+                }
+                Console.WriteLine($" {tournamentMatches[i].Season } Score card for {tournamentMatches[i].HomeTeam} vs {tournamentMatches[i].VisitorTeam}");
             }
         }
 
@@ -137,6 +141,11 @@ namespace KP.MatchWinner.WebScrapperConsole
                 //matches.Add(match);
             }
             Console.WriteLine("Fixture uploaded successfully.");
+        }
+
+        private async Task ScrapRunningTournament() {
+            var matches = _tournamentMatchService.GetDailyMatchForScrap();
+            await GetScoreCard(matches, true);
         }
     }
 }

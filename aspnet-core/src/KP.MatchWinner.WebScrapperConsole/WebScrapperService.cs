@@ -165,7 +165,7 @@ namespace KP.MatchWinner.WebScrapperConsole
         public async Task<TournamentMatchDto> BrowseScore(TournamentMatchDto tournamentMatch, bool KeepBowserOpen = false)
         {
             OpenBrowser();
-            _driver.Url = tournamentMatch.ScoreCardUrl;
+            _driver.Url = tournamentMatch.ScoreCardUrl.Replace("live-cricket-score", "full-scorecard");
             var html = _driver.FindElementByTagName("body").GetAttribute("innerHTML");
             if (!KeepBowserOpen)
                 CloseBrowser();
@@ -178,8 +178,19 @@ namespace KP.MatchWinner.WebScrapperConsole
             var scoreCards = document.QuerySelectorAll("div.card.content-block.match-scorecard-table");
             var FirstInning = ParseScoreCard(scoreCards[0]);
             var SecondInning = ParseScoreCard(scoreCards[1]);
-            tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
-            tournamentMatch.VisitorTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
+            
+            var teamName = scoreCards[0].QuerySelector("h5.header-title.label").TextContent;
+            if (teamName.StartsWith(tournamentMatch.HomeTeam))
+            {
+                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
+                tournamentMatch.VisitorTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
+            }
+            else 
+            {
+                tournamentMatch.VisitorTeamScoreCard= new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
+                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
+            }
+
             return tournamentMatch;
         }
 

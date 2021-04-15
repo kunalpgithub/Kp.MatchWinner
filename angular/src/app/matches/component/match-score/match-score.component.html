@@ -8,7 +8,8 @@
     >
       <div class="card-header">
         <h6>{{ matchScore.homeTeam }} vs {{ matchScore.visitorTeam }}</h6>
-        <small> {{ matchScore.venue }}, {{ matchScore.playedOn | date }}</small>
+        <small> {{ matchScore.venue }}, {{matchScore.playedDate | date}}</small>
+        <!-- {{ matchScore.playedOn | date }}  -->
       </div>
       <div class="card-body">
         <app-team-score
