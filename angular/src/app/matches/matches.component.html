@@ -10,14 +10,16 @@
     style="width: 100%"
   >
     <ng-container *ngFor="let schedule of tournamentMatches; let i = index">
-      <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}">
+      <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}" disabled="true">
         <ng-template ngbPanelHeader>
-          <!-- <div class="row"></div> -->
           <div class="float-left">
             <h5>Match {{ i + 1 }} {{ schedule.homeTeam }} vs {{ schedule.visitorTeam }}</h5>
             <p>
               <small>{{ schedule.venue }},</small>
               <small>{{ schedule.playedDate | date }}</small>
+            </p>
+            <p>
+              {{ schedule.winner }}
             </p>
           </div>
 
@@ -25,14 +27,12 @@
             <button
               type="button"
               (click)="showAnalysis(i); acc.toggle('panel-' + i)"
+              [disabled]="schedule.homeTeamScoreCard != null"
               class="btn btn-success float-right"
             >
-              Show Analysis
+              Show analysis
             </button>
           </div>
-
-          <!-- <div class="float-left"></div>
-          <div class="justify-content-center"></div> -->
         </ng-template>
         <ng-template ngbPanelContent>
           <app-match-analysis

@@ -22,7 +22,7 @@ export class MatchesComponent implements OnInit {
   /**
    *
    */
-  constructor(private tournamentMatchService: TournamentMatchService) {}
+  constructor(private tournamentMatchService: TournamentMatchService) { }
   ngOnInit(): void {
     this.tournamentMatchService.getRunningTournament().subscribe(response => {
       this.currentTournaments = response;
