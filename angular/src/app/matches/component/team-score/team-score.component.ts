@@ -8,10 +8,11 @@ import { TeamScoreDto } from '@proxy/match-admin';
   styleUrls: ['./team-score.component.scss'],
 })
 export class TeamScoreComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
   @Input() team: TeamScoreDto;
   @Input() teamName: string;
+  @Input() teamScore: string;
 
   ngOnInit(): void {
     this.team.batsmen = this.team.batsmen
@@ -36,5 +37,8 @@ export class TeamScoreComponent implements OnInit {
         return 0;
       })
       .splice(0, 4);
+    if (!this.teamScore) {
+      this.teamScore = this.team.score;
+    }
   }
 }

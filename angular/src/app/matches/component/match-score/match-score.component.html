@@ -8,21 +8,23 @@
     >
       <div class="card-header">
         <h6>{{ matchScore.homeTeam }} vs {{ matchScore.visitorTeam }}</h6>
-        <small> {{ matchScore.venue }}, {{matchScore.playedDate | date}}</small>
+        <small> {{ matchScore.venue }}, {{ matchScore.playedDate | date }}</small>
         <!-- {{ matchScore.playedOn | date }}  -->
       </div>
       <div class="card-body">
         <app-team-score
-          *ngIf="showTeam == '' || showTeam == matchScore.homeTeam"
           [team]="matchScore.homeTeamScoreCard"
           [teamName]="matchScore.homeTeam"
+          [teamScore]="matchScore.homeTeamScore"
         ></app-team-score>
         <app-team-score
-          *ngIf="showTeam == '' || showTeam == matchScore.visitorTeam"
           [teamName]="matchScore.visitorTeam"
           [team]="matchScore.visitorTeamScoreCard"
+          [teamScore]="matchScore.visitorTeamScore"
         ></app-team-score>
       </div>
     </div>
   </ng-container>
 </div>
+<!-- *ngIf="showTeam == '' || showTeam == matchScore.homeTeam" -->
+<!-- *ngIf="showTeam == '' || showTeam == matchScore.visitorTeam" -->

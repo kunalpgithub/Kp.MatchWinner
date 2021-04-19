@@ -173,8 +173,11 @@ namespace KP.MatchWinner.WebScrapperConsole
             var context = BrowsingContext.New(config);
             var document = await context.OpenAsync(req => req.Content(html));
             var matchHeader = document.QuerySelector("div.match-header");
-            var teams = matchHeader.QuerySelectorAll("p.name");
-
+            //var teams = matchHeader.QuerySelectorAll("p.name");
+            //var score = matchHeader.QuerySelectorAll("span.score");
+            var winner = matchHeader.QuerySelector("div.status-text span").TextContent.Trim();
+            tournamentMatch.Winner = winner;
+            Console.WriteLine(winner);
             var scoreCards = document.QuerySelectorAll("div.card.content-block.match-scorecard-table");
             var FirstInning = ParseScoreCard(scoreCards[0]);
             var SecondInning = ParseScoreCard(scoreCards[1]);
@@ -182,13 +185,13 @@ namespace KP.MatchWinner.WebScrapperConsole
             var teamName = scoreCards[0].QuerySelector("h5.header-title.label").TextContent;
             if (teamName.StartsWith(tournamentMatch.HomeTeam))
             {
-                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
-                tournamentMatch.VisitorTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
+                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() {  Score = FirstInning.Score, Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
+                tournamentMatch.VisitorTeamScoreCard = new TeamScoreDto() { Score = SecondInning.Score,  Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
             }
             else 
             {
-                tournamentMatch.VisitorTeamScoreCard= new TeamScoreDto() { Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
-                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
+                tournamentMatch.VisitorTeamScoreCard= new TeamScoreDto() { Score =FirstInning.Score, Batsmen = FirstInning.Batsmen, Bowlers = SecondInning.Bowlers };
+                tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Score = SecondInning.Score, Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
             }
 
             return tournamentMatch;
@@ -217,7 +220,10 @@ namespace KP.MatchWinner.WebScrapperConsole
                         Six = Convert.ToInt32(battingdata[6].TextContent.Trim() == "-" ? 0 : battingdata[6].TextContent.Trim())
                     });
                 }
-
+                else if (battingdata.Length == 4 && battingdata[0].TextContent.ToUpper().Trim() == "TOTAL") {
+                    tm.Score = battingdata[2].TextContent.Trim();
+                    Console.WriteLine("Score" + tm.Score);
+                }
             }
 
             var bowlersTable = scoreCardElement.QuerySelector("table.bowler");

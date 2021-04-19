@@ -10,7 +10,7 @@
     style="width: 100%"
   >
     <ng-container *ngFor="let schedule of tournamentMatches; let i = index">
-      <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}" disabled="true">
+      <ngb-panel title="schedule.HomeTeam" id="panel-{{ i }}">
         <ng-template ngbPanelHeader>
           <div class="float-left">
             <h5>Match {{ i + 1 }} {{ schedule.homeTeam }} vs {{ schedule.visitorTeam }}</h5>

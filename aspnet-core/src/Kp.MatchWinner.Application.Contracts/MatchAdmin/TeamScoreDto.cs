@@ -29,8 +29,8 @@ namespace Kp.MatchWinner.MatchAdmin
             Batsmen = new List<BatsManDto>();
             Bowlers = new List<BowlerDto>();
         }
-        //public string Name { get; set; }
-        //public string Score { get; set; }
+        public string Name { get; set; }
+        public string Score { get; set; }
         public List<BatsManDto> Batsmen { get; set; }
         public List<BowlerDto> Bowlers { get; set; }
 
