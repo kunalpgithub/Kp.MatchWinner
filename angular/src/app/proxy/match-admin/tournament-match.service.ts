@@ -31,6 +31,13 @@ export class TournamentMatchService {
     },
     { apiName: this.apiName });
 
+  getDailyMatchForScrap = () =>
+    this.restService.request<any, TournamentMatchDto[]>({
+      method: 'GET',
+      url: `/api/app/tournamentMatch/dailyMatchForScrap`,
+    },
+    { apiName: this.apiName });
+
   getList = (input: PagedAndSortedResultRequestDto) =>
     this.restService.request<any, PagedResultDto<TournamentMatchDto>>({
       method: 'GET',

@@ -23,6 +23,8 @@ export interface CurrentTournamentDto {
 }
 
 export interface TeamScoreDto {
+  name: string;
+  score: string;
   batsmen: BatsManDto[];
   bowlers: BowlerDto[];
 }
