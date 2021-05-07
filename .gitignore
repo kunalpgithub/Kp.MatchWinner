@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+aspnet-core/src/Kp.MatchWinner.HttpApi.Host/Logs/logs.txt
+react-native/yarn.lock
