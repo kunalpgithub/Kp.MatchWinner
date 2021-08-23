@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppContainer from './src/components/AppContainer/AppContainer';
 import { store, persistor } from './src/store';
 import getTheme from './src/theme/components';
-import { activeTheme } from './src/theme/variables';
+import { activeTheme, materialTheme, commonColorTheme } from './src/theme/variables';
 import { initAPIInterceptor } from './src/interceptors/APIInterceptor';
 
 enableScreens();

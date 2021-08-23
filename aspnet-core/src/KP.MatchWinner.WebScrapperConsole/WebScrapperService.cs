@@ -164,6 +164,10 @@ namespace KP.MatchWinner.WebScrapperConsole
 
         public async Task<TournamentMatchDto> BrowseScore(TournamentMatchDto tournamentMatch, bool KeepBowserOpen = false)
         {
+            try
+            {
+
+            
             OpenBrowser();
             _driver.Url = tournamentMatch.ScoreCardUrl.Replace("live-cricket-score", "full-scorecard");
             var html = _driver.FindElementByTagName("body").GetAttribute("innerHTML");
@@ -194,6 +198,12 @@ namespace KP.MatchWinner.WebScrapperConsole
                 tournamentMatch.HomeTeamScoreCard = new TeamScoreDto() { Score = SecondInning.Score, Batsmen = SecondInning.Batsmen, Bowlers = FirstInning.Bowlers };
             }
 
+            
+            }
+            catch (Exception ex)
+            {
+                tournamentMatch.HasScoreCard = false;
+            }
             return tournamentMatch;
         }
 

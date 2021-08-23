@@ -12,5 +12,6 @@ namespace Kp.MatchWinner.MatchAdmin
     public interface ITournamentService : ICrudAppService<TournamentDto,Guid, PagedAndSortedResultRequestDto,TournamentDto,TournamentDto>
     {
         public List<TournamentDto> GetTournamnetByAvailability(bool isAvailable);
+        TournamentDto GetTournamentByName(string tournamentName);
     }
 }

@@ -40,5 +40,5 @@ namespace Kp.MatchWinner.MatchAnalysis
                 VisitorTeamAtVenue = ObjectMapper.Map<List<TournamentMatch>, List<TournamentMatchDto>>(allVisitorTeamMatchesAtVenue.ToList()),
             };
         }
-    }
+        }
 }

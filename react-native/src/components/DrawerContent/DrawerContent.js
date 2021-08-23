@@ -9,6 +9,7 @@ import { withPermission } from '../../hocs/PermissionHOC';
 
 const screens = {
   Home: { label: '::Menu:Home', iconName: 'home' },
+  Match: { label: '::Menu:Match', iconName: 'match' },
   Users: {
     label: 'AbpIdentity::Users',
     iconName: 'contacts',

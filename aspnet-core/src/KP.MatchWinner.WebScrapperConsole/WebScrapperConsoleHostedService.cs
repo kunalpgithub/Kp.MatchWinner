@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AngleSharp.Io;
 using Kp.MatchWinner.MatchAdmin;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp;
 using Volo.Abp.ObjectMapping;
+using static IdentityModel.OidcConstants;
+using static Volo.Abp.Identity.IdentityPermissions;
 
 namespace KP.MatchWinner.WebScrapperConsole
 {
@@ -27,7 +30,7 @@ namespace KP.MatchWinner.WebScrapperConsole
             WebScrapperService webScrapperService
             , ITournamentService tournamentService
             , ITournamentMatchService tournamentMatchService
-         
+
             //,IObjectMapper objectMapper
             )
         {
@@ -43,8 +46,9 @@ namespace KP.MatchWinner.WebScrapperConsole
         {
             _application.Initialize(_serviceProvider);
             //await ScrapOldTournament();
-            await ScrapRunningTournament();
-            //await UploadFixture();
+            //await ScrapRunningTournament();
+
+            await UploadFixture("Caribbean Premier League", "2021", @"C:\Users\kunal\Downloads\caribbean-premier-league-2021-events.ics");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -52,7 +56,10 @@ namespace KP.MatchWinner.WebScrapperConsole
             _application.Shutdown();
             return Task.CompletedTask;
         }
-
+        /// <summary>
+        /// This method scrap data for completed tournament. Provided  tournament & season are added in DB as not available.
+        /// </summary>
+        /// <returns></returns>
         private async Task ScrapOldTournament()
         {
             //Get tournaments which are not scraped.
@@ -74,13 +81,13 @@ namespace KP.MatchWinner.WebScrapperConsole
 
                     var schedules = _webScrapperService.BrowseSchedule(tournament, season.Season, true);
                     Console.WriteLine("**************************************************************");
-                    Console.WriteLine($"Fetched schedules {schedules.Count}");
+                    Console.WriteLine($"Fetched schedules {  schedules?.Count}");
                     Console.WriteLine("**************************************************************");
                     Console.WriteLine();
 
                     await GetScoreCard(schedules, isLastTournament && isLastSeason);
                     Console.WriteLine("**************************************************************");
-                    Console.WriteLine($"Fetched score card for matches {schedules.Count}");
+                    Console.WriteLine($"Fetched score card for matches {schedules?.Count}");
                     Console.WriteLine("**************************************************************");
                     Console.WriteLine();
                     season.IsAvailable = true;
@@ -89,13 +96,19 @@ namespace KP.MatchWinner.WebScrapperConsole
             }
         }
 
+        /// <summary>
+        /// Fetch score card for tournament match. If its fails to fetch scorecard it will mark match hasScorecard false. Which can be scrapped seperately by Url.
+        /// </summary>
+        /// <param name="tournamentMatches"></param>
+        /// <param name="isLastTournament"></param>
+        /// <returns></returns>
         private async Task GetScoreCard(List<TournamentMatchDto> tournamentMatches, bool isLastTournament)
         {
             for (int i = 0; i < tournamentMatches.Count; i++)
             {
                 bool isLastMatch = i == tournamentMatches.Count - 1;
 
-                if (!string.IsNullOrEmpty(tournamentMatches[i].ScoreCardUrl) && (tournamentMatches[i].Winner == null ||(tournamentMatches[i].Winner != null && tournamentMatches[i].Winner != "Match yet to begin" && !tournamentMatches[i].Winner.Contains("abandoned", StringComparison.InvariantCultureIgnoreCase) && !tournamentMatches[i].Winner.Contains("No result", StringComparison.InvariantCultureIgnoreCase))))
+                if (!string.IsNullOrEmpty(tournamentMatches[i].ScoreCardUrl) && (tournamentMatches[i].Winner == null || (tournamentMatches[i].Winner != null && tournamentMatches[i].Winner != "Match yet to begin" && !tournamentMatches[i].Winner.Contains("abandoned", StringComparison.InvariantCultureIgnoreCase) && !tournamentMatches[i].Winner.Contains("No result", StringComparison.InvariantCultureIgnoreCase))))
                 {
                     tournamentMatches[i].HasBallByBall = false;
                     tournamentMatches[i].HasScoreCard = true;
@@ -118,12 +131,18 @@ namespace KP.MatchWinner.WebScrapperConsole
             }
         }
 
-        private async Task UploadFixture()
+        /// <summary>
+        /// Dowloand  tournament calender,and place it on mentioned locaiton to upload.
+        /// </summary>
+        /// <returns></returns>
+        private async Task UploadFixture(string tournamentName, string season, string filepath)
         {
-            Guid id = new Guid(Convert.FromBase64String("qu6lQ1b3A5l90zn7YVHEhg=="));
-            var tournament = await _tournamentService.GetAsync(id);
+            //Guid id = new Guid(Convert.FromBase64String("qu6lQ1b3A5l90zn7YVHEhg=="));
+            //var tournament = await _tournamentService.GetAsync(id);
+            var tournament = _tournamentService.GetTournamentByName(tournamentName);
 
-            string text = System.IO.File.ReadAllText(@"C:\Users\kunal\Downloads\ipl-2021-events.ics");
+            //@"C:\Users\kunal\Downloads\caribbean-premier-league-2021-events.ics"
+            string text = System.IO.File.ReadAllText(filepath);
             var calendar = Ical.Net.Calendar.Load(text);
             //List<TournamentMatchDto> matches = new List<TournamentMatchDto>();
             foreach (var evnt in calendar.Events)
@@ -135,7 +154,7 @@ namespace KP.MatchWinner.WebScrapperConsole
                 match.ScoreCardUrl = evnt.Description[(evnt.Description.IndexOf(": ") + 2)..];
                 match.Venue = evnt.Location;
                 match.PlayedDate = evnt.DtStart.Date;
-                match.Season = "2021";
+                match.Season = season;
                 match.TournamentId = tournament.Id;
                 await _tournamentMatchService.CreateAsync(match);
                 //matches.Add(match);
@@ -143,7 +162,12 @@ namespace KP.MatchWinner.WebScrapperConsole
             Console.WriteLine("Fixture uploaded successfully.");
         }
 
-        private async Task ScrapRunningTournament() {
+        /// <summary>
+        /// Scrap individual matches played in running tournament.
+        /// </summary>
+        /// <returns></returns>
+        private async Task ScrapRunningTournament()
+        {
             var matches = _tournamentMatchService.GetDailyMatchForScrap();
             await GetScoreCard(matches, true);
         }

@@ -17,6 +17,7 @@ import { isTokenValid } from '../../utils/TokenUtils';
 import DrawerNavigator from '../../navigators/DrawerNavigator';
 import AuthNavigator from '../../navigators/AuthNavigator';
 import { getEnvVars } from '../../../Environment';
+import MatchStackNavigator from '../../navigators/MatchNavigator';
 
 const { localization } = getEnvVars();
 

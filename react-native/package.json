@@ -44,6 +44,11 @@
     "yup": "^0.28.0"
   },
   "devDependencies": {
+    "@abp/ng.account": "~3.3.1",
+    "@abp/ng.identity": "~3.3.1",
+    "@abp/ng.setting-management": "~3.3.1",
+    "@abp/ng.tenant-management": "~3.3.1",
+    "@abp/ng.theme.basic": "~3.3.1",
     "@babel/core": "~7.9.0",
     "@types/i18n-js": "^3.0.1",
     "@types/react": "~16.9.35",

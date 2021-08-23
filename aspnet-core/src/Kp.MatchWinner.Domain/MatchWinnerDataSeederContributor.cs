@@ -45,6 +45,20 @@ namespace Kp.MatchWinner
                                         new TournamentSeason{ Season = "2019/20" },
                                         new TournamentSeason{ Season = "2020/21" },
                                     }
+                },
+                new Tournament() { TournamentName= "Caribbean Premier League",
+                                    Seasons = new List<TournamentSeason>{
+                                        new TournamentSeason{ Season = "2013" },
+                                        new TournamentSeason{ Season = "2014" },
+                                        new TournamentSeason{ Season = "2015" },
+                                        new TournamentSeason{ Season = "2016" },
+                                        new TournamentSeason{ Season = "2017" },
+                                        new TournamentSeason{ Season = "2018" },
+                                        new TournamentSeason{ Season = "2019" },
+                                        new TournamentSeason{ Season = "2020" },
+                                        new TournamentSeason{ Season = "2021" },
+                                        new TournamentSeason{ Season = "2022" },
+                                    }
                 }
             };
             //Pakistan Super League
