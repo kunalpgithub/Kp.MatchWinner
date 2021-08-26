@@ -79,6 +79,7 @@ const ListHeader = () => {
 
 function MatchScreen({ navigation, route }) {
     const { match } = route.params;
+    const columns = Platform.OS == "web" ? 5 : 1;
     const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisReport>();
 
     const getMatchAnalysisData = () => {
@@ -109,27 +110,31 @@ function MatchScreen({ navigation, route }) {
             <Tabs scrollWithoutAnimation={true}>
                 <Tab heading={'One on One'}   >
                     {/* <View style={{ flex: 1, maxHeight: 600 }} > */}
-                    {/* <ScrollView pagingEnabled={true} > */}
-                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
-                    {/* </ScrollView> */}
+                    <ScrollView horizontal={Platform.OS == "web"} >
+                        {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
+                    </ScrollView>
                     {/* </View> */}
                 </Tab>
                 <Tab heading={'Ground Battle'} >
-
-                    <View style={{ flex: 1, maxHeight: 600 }} >
-                        <ScrollView >
-                            {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
-                            {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
+                    <View style={{ maxHeight: 500 }} >
+                        <ScrollView horizontal={Platform.OS == "web"}>
+                            {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
+                        </ScrollView>
+                        <ScrollView horizontal={Platform.OS == "web"}>
+                            {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
                         </ScrollView>
                     </View>
                 </Tab>
                 <Tab heading={'Last Matches'} >
-                    <View style={{ flex: 1, maxHeight: 600 }} >
-                        <ScrollView >
-                            {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
-                            {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} renderItem={renderItem} horizontal={false} numColumns={Platform.OS == "web" ? 5 : 1} keyExtractor={item => item.id} />}
+                    <View style={{ maxHeight: 500 }} >
+                        <ScrollView horizontal={Platform.OS == "web"}>
+                            {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
+                        </ScrollView>
+                        <ScrollView horizontal={Platform.OS == "web"}>
+                            {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} renderItem={renderItem} horizontal={false} numColumns={columns} keyExtractor={item => item.id} />}
                         </ScrollView>
                     </View>
+
                 </Tab>
             </Tabs>
         </Container >
