@@ -19,7 +19,7 @@ export default function MatchStackNavigator() {
         options={({ route, navigation }) => ({
           headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
           title:
-            'Match Analysis for' +
+            'Match Analysis for ' +
             route.params.match.homeTeam +
             ' vs ' +
             route.params.match.visitorTeam,

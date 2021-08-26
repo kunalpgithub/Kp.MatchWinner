@@ -1,27 +1,25 @@
 import { Text, Container, Content, CardItem, Card, Grid, Col, Row, Button, Tabs, Tab, Header, ScrollableTab, View } from 'native-base';
-import { StyleSheet, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, Platform } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { getMatchAnalysis } from '../../api/MatchAPI';
 import { useFocusEffect } from '@react-navigation/core';
 import { MatchAnalysisReport, TournamentDto, TournamentMatchDto } from '../../models/match';
 import moment from 'moment';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import { ScrollView } from 'react-native-gesture-handler';
 
 function MatchScore(props: { match: TournamentMatchDto }) {
     const { match } = props;
     return (<>
 
-        <Card>
+        <Card style={{ width: 500 }} >
             <CardItem header>
                 <Grid>
-                    <Row>
-                        <Text style={{ fontWeight: 'bold' }}>{match.venue}{moment(new Date(match.playedDate)).format('MMMM d, YYYY')}</Text>
-                    </Row>
+
                     <Row>
                         <Col><Text style={{ fontWeight: 'bold' }} >{match.homeTeam}-{match.homeTeamScore}</Text></Col>
                         <Col><Text style={{ fontWeight: 'bold' }}>{match.visitorTeam}-{match.visitorTeamScore}</Text></Col>
                     </Row>
-
                 </Grid>
             </CardItem>
             <CardItem>
@@ -32,33 +30,33 @@ function MatchScore(props: { match: TournamentMatchDto }) {
                     </Row>
                     <Row>
                         <Col>
-                            {match.homeTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text>{batsman.name} {batsman.run}</Text>)}
+                            {match.homeTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
                         </Col>
                         <Col>
-                            {match.visitorTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text>{batsman.name} {batsman.run}</Text>)}
+                            {match.visitorTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
                         </Col>
                     </Row>
-
-                </Grid>
-            </CardItem>
-            <CardItem>
-                <Grid>
                     <Row>
                         <Col><Text style={{ fontWeight: 'bold' }}>Bowler</Text></Col>
                         <Col><Text style={{ fontWeight: 'bold' }}>Bowler</Text></Col>
                     </Row>
                     <Row>
                         <Col>
-                            {match.homeTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text>{bowler.name} {bowler.wicket}</Text>)}
+                            {match.homeTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
                         </Col>
                         <Col>
-                            {match.visitorTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text>{bowler.name} {bowler.wicket}</Text>)}
+                            {match.visitorTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
                         </Col>
                     </Row>
                 </Grid>
             </CardItem>
             <CardItem footer>
-                <Row><Text style={{ fontWeight: 'bold' }}>{match.winner}</Text></Row>
+                <Grid>
+                    <Row><Text style={{ fontWeight: 'bold' }}>{match.winner}</Text></Row>
+                    <Row>
+                        <Text style={{ fontWeight: 'bold' }}>{match.venue}{moment(new Date(match.playedDate)).format('MMMM d, YYYY')}</Text>
+                    </Row>
+                </Grid>
             </CardItem>
         </Card>
 
@@ -66,6 +64,17 @@ function MatchScore(props: { match: TournamentMatchDto }) {
 }
 
 const renderItem = ({ item }: { item: TournamentMatchDto }) => <MatchScore match={item}></MatchScore >
+
+const ListHeader = () => {
+    //View to set in Header
+    return (
+        <View style={styles.headerFooterStyle}>
+            <Text style={styles.textStyle}>
+                This is Header
+            </Text>
+        </View>
+    );
+};
 
 
 function MatchScreen({ navigation, route }) {
@@ -97,36 +106,35 @@ function MatchScreen({ navigation, route }) {
                 
                 */}
             {/* <Header hasTabs /> */}
-            <Tabs >
-                <Tab heading={'One on One'} >
-                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} style={{ maxHeight: 700, marginBottom: 20 }} renderItem={renderItem} keyExtractor={item => item.id} />}
+            <Tabs scrollWithoutAnimation={true}>
+                <Tab heading={'One on One'}   >
+                    {/* <View style={{ flex: 1, maxHeight: 600 }} > */}
+                    {/* <ScrollView pagingEnabled={true} > */}
+                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
+                    {/* </ScrollView> */}
+                    {/* </View> */}
                 </Tab>
                 <Tab heading={'Ground Battle'} >
-                    <Tabs>
-                        <Tab heading={match.homeTeam} >
-                            {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} style={{ maxHeight: 700, marginBottom: 20 }} renderItem={renderItem} keyExtractor={item => item.id} />}
-                        </Tab>
-                        <Tab heading={match.visitorTeam}  >
-                            {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} style={{ maxHeight: 700, marginBottom: 20 }} renderItem={renderItem} keyExtractor={item => item.id} />}
-                        </Tab>
-                    </Tabs>
+
+                    <View style={{ flex: 1, maxHeight: 600 }} >
+                        <ScrollView >
+                            {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
+                            {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
+                        </ScrollView>
+                    </View>
                 </Tab>
-                <Tab heading={'Recent Matches'} >
-                    <Tabs>
-                        <Tab heading={match.visitorTeam} >
-                            {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} style={{ maxHeight: 700, marginBottom: 20 }} renderItem={renderItem} keyExtractor={item => item.id} />}
-                        </Tab>
-                        <Tab heading={match.homeTeam} >
-                            {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} style={{ maxHeight: 700, marginBottom: 20 }} renderItem={renderItem} keyExtractor={item => item.id} />}
-                        </Tab>
-                    </Tabs>
+                <Tab heading={'Last Matches'} >
+                    <View style={{ flex: 1, maxHeight: 600 }} >
+                        <ScrollView >
+                            {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} renderItem={renderItem} numColumns={Platform.OS == "web" ? 5 : 1} horizontal={false} keyExtractor={item => item.id} />}
+                            {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} renderItem={renderItem} horizontal={false} numColumns={Platform.OS == "web" ? 5 : 1} keyExtractor={item => item.id} />}
+                        </ScrollView>
+                    </View>
                 </Tab>
             </Tabs>
-            {/* </Content> */}
-        </Container>
+        </Container >
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -134,7 +142,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 20,
         // backgroundColor: '#fff',
-    }
+    },
+    emptyListStyle: {
+        padding: 10,
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    itemStyle: {
+        padding: 10,
+    },
+    headerFooterStyle: {
+        width: '100%',
+        height: 45,
+        backgroundColor: '#606070',
+    },
+    textStyle: {
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: 18,
+        padding: 7,
+    },
 });
+
 export default MatchScreen;
 
