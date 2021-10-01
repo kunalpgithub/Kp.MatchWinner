@@ -8,16 +8,32 @@ import TenantsStackNavigator from './TenantsNavigator';
 import DrawerContent from '../components/DrawerContent/DrawerContent';
 import MatchScreen from '../screens/Match/MatchScreen';
 
+// type RouteDrawerNavigationParamList = {
+//   Home:{},
+//   Users:{},
+//   Tenants:{},
+//   Settings:{},
+//   Match: {},
+//   Tournament: {},
+// };
+
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Home" drawerContent={DrawerContent}>
+    <Drawer.Navigator
+      initialRouteName="Match"
+      drawerContent={DrawerContent}
+      sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}>
       <Drawer.Screen name="Home" component={HomeStackNavigator} />
       <Drawer.Screen name="Users" component={UsersStackNavigator} />
       <Drawer.Screen name="Tenants" component={TenantsStackNavigator} />
       <Drawer.Screen name="Settings" component={SettingsStackNavigator} />
-      <Drawer.Screen name="Match" component={MatchStackNavigator} />
+      <Drawer.Screen
+        name="Match"
+        component={MatchStackNavigator}
+        sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}
+      />
     </Drawer.Navigator>
   );
 }

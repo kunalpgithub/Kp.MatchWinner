@@ -40,5 +40,7 @@ namespace Kp.MatchWinner.MatchAdmin
             if (tournament == null) throw new Exception($"Tournament with name {tournamentName} not found.");
             return ObjectMapper.Map<Tournament, TournamentDto>(tournament);
         }
+
+        
     }
 }

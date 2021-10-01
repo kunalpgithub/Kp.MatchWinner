@@ -8,41 +8,42 @@ import moment from 'moment';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 // import { ScrollView } from 'react-native-gesture-handler';
+import matchStyle from './styles'
 
 function MatchScore(props: { match: TournamentMatchDto }) {
     const { match } = props;
     return (
         <Card style={{ flex: 1, flexDirection: 'column' }} >
             <CardItem header style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-                <Text style={{ fontWeight: 'bold' }} >{match.homeTeam}-{match.homeTeamScore}</Text>
-                <Text style={{ fontWeight: 'bold' }}>{match.visitorTeam}-{match.visitorTeamScore}</Text>
+                <Text style={matchStyle.cardContent} >{match.homeTeam}-{match.homeTeamScore}</Text>
+                <Text style={matchStyle.cardContent}>{match.visitorTeam}-{match.visitorTeamScore}</Text>
             </CardItem>
             <CardItem style={{ flexDirection: 'column', alignItems: 'flex-start' }} >
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{}}>
-                        <Text style={{ fontWeight: 'bold' }}>Batsman</Text>
-                        {match.homeTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
+                        <Text style={matchStyle.cardContent}>Batsman</Text>
+                        {match.homeTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name} style={matchStyle.cardContent}>{batsman.name} {batsman.run}</Text>)}
                     </View>
                     <View style={{}}>
-                        <Text style={{ fontWeight: 'bold' }}>Batsman</Text>
-                        {match.visitorTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
+                        <Text style={matchStyle.cardContent}>Batsman</Text>
+                        {match.visitorTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text style={matchStyle.cardContent} key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <View>
-                        <Text style={{ fontWeight: 'bold' }}>Bowler</Text>
-                        {match.homeTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
+                    <View >
+                        <Text style={matchStyle.cardContent}>Bowler</Text>
+                        {match.homeTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text style={matchStyle.cardContent} key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
                     </View>
-                    <View>
-                        <Text style={{ fontWeight: 'bold' }}>Bowler</Text>
-                        {match.visitorTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
+                    <View >
+                        <Text style={matchStyle.cardContent}>Bowler</Text>
+                        {match.visitorTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text style={matchStyle.cardContent} key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
                     </View>
                 </View>
             </CardItem>
             <CardItem footer style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                 <View>
-                    <Text style={{ fontWeight: 'bold' }}>{match.winner}</Text>
-                    <Text style={{ fontWeight: 'bold' }}>{match.venue}{moment(new Date(match.playedDate)).format('MMMM d, YYYY')}</Text>
+                    <Text style={matchStyle.cardContent} >{match.winner}</Text>
+                    <Text style={matchStyle.cardContent}>{match.venue}{moment(new Date(match.playedDate)).format('MMMM d, YYYY')}</Text>
                 </View>
             </CardItem>
         </Card >
@@ -52,16 +53,16 @@ function MatchScore(props: { match: TournamentMatchDto }) {
 
 const renderItem = ({ item }: { item: TournamentMatchDto }) => <MatchScore match={item}></MatchScore >
 
-const ListHeader = () => {
-    //View to set in Header
-    return (
-        <View style={styles.headerFooterStyle}>
-            <Text style={styles.textStyle}>
-                This is Header
-            </Text>
-        </View>
-    );
-};
+// const ListHeader = () => {
+//     //View to set in Header
+//     return (
+//         <View style={styles.headerFooterStyle}>
+//             <Text style={styles.textStyle}>
+//                 This is Header
+//             </Text>
+//         </View>
+//     );
+// };
 
 
 function MatchScreen({ navigation, route }) {
@@ -82,19 +83,7 @@ function MatchScreen({ navigation, route }) {
     );
 
     return (
-        <Container  >
-            {/* style={styles.container} */}
-            {/* <Content> */}
-            {/* 
-                <Card>
-                    <CardItem button onPress={() => { navigation.navigate('Tournament') }}>
-                        <Text>Go to Back</Text>
-                    </CardItem>
-                </Card> */}
-            {/* <Button><Text>My Button</Text></Button> 
-                
-                */}
-            {/* <Header hasTabs /> */}
+        <Container style={{}}  >
             <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} >
                 <Tab heading={'One on One'} >
 
@@ -139,34 +128,34 @@ function MatchScreen({ navigation, route }) {
         </Container >
     );
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        // backgroundColor: '#fff',
-    },
-    emptyListStyle: {
-        padding: 10,
-        fontSize: 18,
-        textAlign: 'center',
-    },
-    itemStyle: {
-        padding: 10,
-    },
-    headerFooterStyle: {
-        width: '100%',
-        height: 45,
-        backgroundColor: '#606070',
-    },
-    textStyle: {
-        textAlign: 'center',
-        color: '#fff',
-        fontSize: 18,
-        padding: 7,
-    },
-});
+// const styles = StyleSheet.create({
+// container: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     paddingHorizontal: 20,
+//     // backgroundColor: '#fff',
+// },
+// emptyListStyle: {
+//     padding: 10,
+//     fontSize: 18,
+//     textAlign: 'center',
+// },
+// itemStyle: {
+//     padding: 10,
+// },
+// headerFooterStyle: {
+//     width: '100%',
+//     height: 45,
+//     backgroundColor: '#606070',
+// },
+// textStyle: {
+//     textAlign: 'center',
+//     color: '#fff',
+//     fontSize: 18,
+//     padding: 7,
+// },
+// });
 
 export default MatchScreen;
 

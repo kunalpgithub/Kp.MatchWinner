@@ -23,5 +23,13 @@ export const getMatchAnalysis = (homeTeam: string, visitorTeam: string, venue: s
     params: { homeTeam: homeTeam, visitorTeam: visitorTeam, venue: venue },
   }).then((response: AxiosResponse<MatchAnalysisReport>) => response.data);
 
+export const getTournamnetByAvailabilityByIsAvailable = (isAvailable: boolean = true) =>
+  api({
+    method: 'GET',
+    url: `/api/app/tournament/gettournamnetbyavailability`,
+    params: { isAvailable: isAvailable },
+  }).then((response: AxiosResponse<MatchAnalysisReport>) => response.data);
+
+
 
 
