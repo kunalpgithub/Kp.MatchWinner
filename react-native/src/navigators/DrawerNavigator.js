@@ -24,7 +24,8 @@ export default function DrawerNavigator() {
     <Drawer.Navigator
       initialRouteName="Match"
       drawerContent={DrawerContent}
-      sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}>
+      // sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}
+    >
       <Drawer.Screen name="Home" component={HomeStackNavigator} />
       <Drawer.Screen name="Users" component={UsersStackNavigator} />
       <Drawer.Screen name="Tenants" component={TenantsStackNavigator} />
@@ -32,7 +33,7 @@ export default function DrawerNavigator() {
       <Drawer.Screen
         name="Match"
         component={MatchStackNavigator}
-        sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}
+        // sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}
       />
     </Drawer.Navigator>
   );

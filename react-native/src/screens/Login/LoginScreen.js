@@ -66,7 +66,7 @@ function LoginScreen({ startLoading, stopLoading, setToken, fetchAppConfig }) {
         <Content px20 style={{ flex: 1 }}>
           <Formik
             validationSchema={ValidationSchema}
-            initialValues={{ username: '', password: '' }}
+            initialValues={{ username: 'Admin', password: '1q2w3E*' }}
             onSubmit={submit}>
             {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
               <Form>

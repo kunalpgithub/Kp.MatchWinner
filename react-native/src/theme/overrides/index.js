@@ -6,6 +6,8 @@ import labelTheme from './Label';
 import buttonTheme from './Button';
 import contentTheme from './Content';
 import itemTheme from './Item';
+import cardTheme from './Card';
+import cardItemTheme from './CardItem';
 
 export default variables => {
   const theme = {
@@ -32,6 +34,12 @@ export default variables => {
     },
     'NativeBase.Item': {
       ...itemTheme(variables),
+    },
+    'NativeBase.Card': {
+      ...cardTheme(variables),
+    },
+    'NativeBase.CardItem': {
+      ...cardItemTheme(variables),
     },
   };
 

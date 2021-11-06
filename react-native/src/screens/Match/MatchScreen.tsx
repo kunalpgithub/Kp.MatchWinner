@@ -1,69 +1,17 @@
-import { Container, CardItem, Card, Tabs, Tab } from 'native-base';
-import { StyleSheet, FlatList, Platform, Text, View } from 'react-native';
+import { CardItem, Card, Tabs, Tab, Content, Text, View } from 'native-base';
+import { StyleSheet, FlatList, Platform, } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { getMatchAnalysis } from '../../api/MatchAPI';
 import { useFocusEffect } from '@react-navigation/core';
 import { MatchAnalysisReport, TournamentDto, TournamentMatchDto } from '../../models/match';
 import moment from 'moment';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { baseStyles } from '../../styles/base'
 import { ScrollView } from 'react-native-gesture-handler';
-// import { ScrollView } from 'react-native-gesture-handler';
-import matchStyle from './styles'
+import matchStyle from './matchStyles'
+import MatchScore from './MatchScore';
 
-function MatchScore(props: { match: TournamentMatchDto }) {
-    const { match } = props;
-    return (
-        <Card style={{ flex: 1, flexDirection: 'column' }} >
-            <CardItem header style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-                <Text style={matchStyle.cardContent} >{match.homeTeam}-{match.homeTeamScore}</Text>
-                <Text style={matchStyle.cardContent}>{match.visitorTeam}-{match.visitorTeamScore}</Text>
-            </CardItem>
-            <CardItem style={{ flexDirection: 'column', alignItems: 'flex-start' }} >
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{}}>
-                        <Text style={matchStyle.cardContent}>Batsman</Text>
-                        {match.homeTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text key={batsman.name} style={matchStyle.cardContent}>{batsman.name} {batsman.run}</Text>)}
-                    </View>
-                    <View style={{}}>
-                        <Text style={matchStyle.cardContent}>Batsman</Text>
-                        {match.visitorTeamScoreCard.batsmen.sort((a, b) => b.run - a.run).slice(0, 5).map(batsman => <Text style={matchStyle.cardContent} key={batsman.name}>{batsman.name} {batsman.run}</Text>)}
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View >
-                        <Text style={matchStyle.cardContent}>Bowler</Text>
-                        {match.homeTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text style={matchStyle.cardContent} key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
-                    </View>
-                    <View >
-                        <Text style={matchStyle.cardContent}>Bowler</Text>
-                        {match.visitorTeamScoreCard.bowlers.sort((a, b) => b.wicket - a.wicket).slice(0, 5).map(bowler => <Text style={matchStyle.cardContent} key={bowler.name}>{bowler.name} {bowler.wicket}</Text>)}
-                    </View>
-                </View>
-            </CardItem>
-            <CardItem footer style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                <View>
-                    <Text style={matchStyle.cardContent} >{match.winner}</Text>
-                    <Text style={matchStyle.cardContent}>{match.venue}{moment(new Date(match.playedDate)).format('MMMM d, YYYY')}</Text>
-                </View>
-            </CardItem>
-        </Card >
-
-    );
-}
 
 const renderItem = ({ item }: { item: TournamentMatchDto }) => <MatchScore match={item}></MatchScore >
-
-// const ListHeader = () => {
-//     //View to set in Header
-//     return (
-//         <View style={styles.headerFooterStyle}>
-//             <Text style={styles.textStyle}>
-//                 This is Header
-//             </Text>
-//         </View>
-//     );
-// };
-
 
 function MatchScreen({ navigation, route }) {
     const { match } = route.params;
@@ -83,12 +31,13 @@ function MatchScreen({ navigation, route }) {
     );
 
     return (
-        <Container style={{}}  >
-            <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} >
+        <Content contentContainerStyle={baseStyles.container}  >
+            <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} style={{ width: '100%' }} >
                 <Tab heading={'One on One'} >
 
                     {/* <ScrollView > */}
-                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
+                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 &&
+                        <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
                     {/* </ScrollView> */}
                     {/* {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} keyExtractor={item => item.id} />} */}
 
@@ -125,37 +74,8 @@ function MatchScreen({ navigation, route }) {
                     </ScrollView>
                 </Tab>
             </Tabs>
-        </Container >
+        </Content >
     );
 }
-// const styles = StyleSheet.create({
-// container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     paddingHorizontal: 20,
-//     // backgroundColor: '#fff',
-// },
-// emptyListStyle: {
-//     padding: 10,
-//     fontSize: 18,
-//     textAlign: 'center',
-// },
-// itemStyle: {
-//     padding: 10,
-// },
-// headerFooterStyle: {
-//     width: '100%',
-//     height: 45,
-//     backgroundColor: '#606070',
-// },
-// textStyle: {
-//     textAlign: 'center',
-//     color: '#fff',
-//     fontSize: 18,
-//     padding: 7,
-// },
-// });
-
 export default MatchScreen;
 

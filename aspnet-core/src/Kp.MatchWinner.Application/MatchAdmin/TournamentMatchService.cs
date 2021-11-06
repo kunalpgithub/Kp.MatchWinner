@@ -35,7 +35,8 @@ namespace Kp.MatchWinner.MatchAdmin
             //           select t).ToList();
 
             var tmGroup = (from tm in _tournamentMatchRepo.AsQueryable()
-                           where tm.PlayedDate != null && tm.PlayedDate >= DateTime.Now.AddDays(-30) && tm.HomeTeamScoreCard == null && tm.VisitorTeamScoreCard == null
+                           where
+                           /*tm.PlayedDate != null && tm.PlayedDate >= DateTime.Now.AddDays(-30) &&*/ tm.HomeTeamScoreCard == null && tm.VisitorTeamScoreCard == null
                            group tm by new { tm.TournamentId, tm.Season }).ToList();
 
             var currentTournaments = from tmg in tmGroup

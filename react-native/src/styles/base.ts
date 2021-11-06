@@ -6,10 +6,11 @@ export const dimensions = {
 }
 
 export const textSize = {
-    header: 30,
-    subHeader: 25,
-    largeText: 20,
-    content: 15
+    header: 20,
+    subHeader: 19,
+    largeText: 17,
+    content: 15,
+    smallText: 13
 }
 
 export const textColor = {
@@ -17,22 +18,46 @@ export const textColor = {
     // primary: 'red'
 }
 
-const baseStyles = {
-    screenHeader: {
+export const baseStyles = {
+    header: {
         fontSize: textSize.header,
-        color: textColor.primary,
-        padding: 1,
-        fontWeight: 'bold'
+        padding: 15
+        // color: textColor.primary,
+        // padding: 1,
+        // fontWeight: 'bold'
 
     },
+    subHeader: {
+        fontSize: textSize.subHeader,
+    },
+
+    largeText: {
+        fontSize: textSize.largeText
+    },
+
+    contentText: {
+        fontSize: textSize.content
+    },
+
+    smallText: {
+        fontSize: textSize.smallText
+    },
+
     container: {
         flex: 1,
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         alignItems: 'center',
-
+        width: '100%'
     }
 }
+
+// '.tournamentTitle': {
+//     // color: '#000',
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//   },
 
 export default function createStyles(overrides: any) {
     return StyleSheet.create({ ...baseStyles, ...overrides })
 }
+

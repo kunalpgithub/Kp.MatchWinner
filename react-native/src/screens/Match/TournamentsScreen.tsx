@@ -5,7 +5,7 @@ import { View, Text } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context"
 import { getTournamnetByAvailabilityByIsAvailable } from "../../api/MatchAPI";
-import style from './styles'
+import style from './matchStyles'
 // import iconSrc from '../../../assets/icon.png'
 
 type tournament = {

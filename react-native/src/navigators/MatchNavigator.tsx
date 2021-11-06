@@ -9,12 +9,14 @@ import { Button } from 'react-native'
 import { TournamentMatchDto } from '../models/match';
 import ScheduleScreen from '../screens/Match/ScheduleScreen';
 import TournamentsScreen from '../screens/Match/TournamentsScreen';
+import DevScreen from '../screens/DevScreen';
 
 type MatchRouteStackParamList = {
   Match: { match: TournamentMatchDto },
   Tournaments: {}
   Schedule: {},
-  Home: {}
+  Home: {},
+  Dev: {}
 }
 
 type HeaderTitleProps = {
@@ -35,13 +37,14 @@ export default function MatchStackNavigator() {
   const { t } = React.useContext(LocalizationContext);
 
   return (
-    <Stack.Navigator initialRouteName="Home" screenOptions={{ headerStyle: { backgroundColor: '#00897B' }, cardStyle: { backgroundColor: '#fff' } }}  >
+    <Stack.Navigator initialRouteName="Home" >
+      {/* screenOptions={{ headerStyle: { backgroundColor: '#00897B' }, cardStyle: { backgroundColor: '#fff' } }}   */}
       <Stack.Screen
-        name="Home"
+        name="Schedule"
         component={TournamentsScreen}
       />
       <Stack.Screen
-        name="Schedule"
+        name="Home"
         component={ScheduleScreen}
         options={({ route, navigation }) => ({
           // headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
@@ -64,6 +67,7 @@ export default function MatchStackNavigator() {
 
         })}
       />
+      <Stack.Screen name="Dev" component={DevScreen}></Stack.Screen>
     </Stack.Navigator>
   );
 }
