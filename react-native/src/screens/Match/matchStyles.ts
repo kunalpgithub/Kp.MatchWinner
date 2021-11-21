@@ -26,7 +26,7 @@ const matchStyles = createStyles({
     matchCard: {
         // maxWidth: 350,
         // minWidth: 350,
-        minWidth: dimensions.fullWidth > 350 ? 350 : dimensions.fullWidth - 20,
+        width: dimensions.fullWidth > 350 ? 350 : dimensions.fullWidth - 20,
         padding: 10,
         backgroundColor: '#fff',
         // padding: 0,

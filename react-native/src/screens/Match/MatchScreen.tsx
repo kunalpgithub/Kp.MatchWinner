@@ -1,15 +1,12 @@
-import { CardItem, Card, Tabs, Tab, Content, Text, View } from 'native-base';
-import { StyleSheet, FlatList, Platform, } from 'react-native';
+import { Tabs, Tab, Content, Text, Segment, Button } from 'native-base';
+import { FlatList, Platform, } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { getMatchAnalysis } from '../../api/MatchAPI';
 import { useFocusEffect } from '@react-navigation/core';
-import { MatchAnalysisReport, TournamentDto, TournamentMatchDto } from '../../models/match';
-import moment from 'moment';
-import { baseStyles } from '../../styles/base'
-import { ScrollView } from 'react-native-gesture-handler';
-import matchStyle from './matchStyles'
+import { MatchAnalysisReport, TournamentMatchDto } from '../../models/match';
 import MatchScore from './MatchScore';
-
+import { styles } from '../../components/Loading/Loading';
+import { baseStyles } from '../../styles/base'
 
 const renderItem = ({ item }: { item: TournamentMatchDto }) => <MatchScore match={item}></MatchScore >
 
@@ -18,6 +15,8 @@ function MatchScreen({ navigation, route }) {
     const isWeb = Platform.OS == "web";
     const columns = isWeb ? 3 : 1;
     const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisReport>();
+    const [isGroundBattleHome, setIsGroundBattleHome] = useState<boolean>(true)
+    const [isLastMatchHome, setIsLastMatchHome] = useState<boolean>(true)
 
     const getMatchAnalysisData = () => {
         getMatchAnalysis(match.homeTeam, match.visitorTeam, match.venue).then((data) => {
@@ -29,52 +28,50 @@ function MatchScreen({ navigation, route }) {
             getMatchAnalysisData();
         }, []),
     );
+    const [activeTab, setActiveTab] = useState<number>(0);
+    const renderMatchHeaders = () => {
+        return (<Segment>
+            <Button onPress={() => activeTab == 1 ? setIsGroundBattleHome(true) : setIsLastMatchHome(true)} active={activeTab == 1 ? isGroundBattleHome : isLastMatchHome}>
+                <Text>{match.homeTeam}</Text>
+            </Button>
+            <Button onPress={() => activeTab == 1 ? setIsGroundBattleHome(false) : setIsLastMatchHome(false)} active={activeTab == 1 ? !isGroundBattleHome : !isLastMatchHome}>
+                <Text>{match.visitorTeam}</Text>
+            </Button>
+        </Segment>)
+
+    }
+
+    const handleTabChange = (changeProps: { from: number, i: number }) => {
+        setActiveTab(changeProps.i);
+    }
 
     return (
-        <Content contentContainerStyle={baseStyles.container}  >
-            <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} style={{ width: '100%' }} >
-                <Tab heading={'One on One'} >
-
-                    {/* <ScrollView > */}
-                    {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 &&
-                        <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
-                    {/* </ScrollView> */}
-                    {/* {matchAnalysis && matchAnalysis.matchBetweenTeam && matchAnalysis.matchBetweenTeam.length > 0 && <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} keyExtractor={item => item.id} />} */}
-
-                </Tab>
-                <Tab heading={'Ground Battle'} >
-                    <ScrollView>
-                        {/* {isWeb ?
-                            <View >
-                                {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
-                                {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
-                            </View>
-                            :} */}
-                        <View style={{ maxHeight: 500 }}>
-                            {matchAnalysis && matchAnalysis.homeTeamAtVenue && matchAnalysis.homeTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.homeTeamAtVenue} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
-                            {matchAnalysis && matchAnalysis.visitorTeamAtVenue && matchAnalysis.visitorTeamAtVenue.length > 0 && <FlatList data={matchAnalysis.visitorTeamAtVenue} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
-                        </View>
-
-                    </ScrollView>
-                </Tab>
-                <Tab heading={'Last Matches'} >
-                    <ScrollView>
-                        {/* {isWeb ?
-                            <View style={{ maxHeight: 500 }} >
-                                {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} renderItem={renderItem} numColumns={columns} horizontal={false} keyExtractor={item => item.id} />}
-                                {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} renderItem={renderItem} horizontal={false} numColumns={columns} keyExtractor={item => item.id} />}
-                            </View>
-                            :} */}
-                        <View style={{ maxHeight: 500 }}>
-                            {matchAnalysis && matchAnalysis.matchAgainstTeam && matchAnalysis.matchAgainstTeam.length > 0 && <FlatList data={matchAnalysis.matchAgainstTeam} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
-                            {matchAnalysis && matchAnalysis.matchByTeam && matchAnalysis.matchByTeam.length > 0 && <FlatList data={matchAnalysis.matchByTeam} renderItem={renderItem} horizontal={true} keyExtractor={item => item.id} />}
-                        </View>
-
-
-                    </ScrollView>
-                </Tab>
-            </Tabs>
-        </Content >
+        <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} onChangeTab={handleTabChange} >
+            <Tab heading={'One on One'}   >
+                {matchAnalysis && matchAnalysis.matchBetweenTeam &&
+                    <FlatList data={matchAnalysis.matchBetweenTeam} renderItem={renderItem} keyExtractor={item => item.id} numColumns={1} style={{ height: 750 }} contentContainerStyle={{ alignItems: 'center' }} />}
+            </Tab>
+            <Tab heading={'Ground Battle'} >
+                {isGroundBattleHome && matchAnalysis && matchAnalysis.homeTeamAtVenue &&
+                    <FlatList
+                        data={matchAnalysis.homeTeamAtVenue}
+                        style={{ height: 750 }}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                        ListHeaderComponent={renderMatchHeaders} contentContainerStyle={{ alignItems: 'center' }} />}
+                {!isGroundBattleHome && matchAnalysis && matchAnalysis.visitorTeamAtVenue &&
+                    <FlatList
+                        data={matchAnalysis.visitorTeamAtVenue}
+                        style={{ height: 750 }}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                        ListHeaderComponent={renderMatchHeaders} contentContainerStyle={{ alignItems: 'center' }} />}
+            </Tab>
+            <Tab heading={'Last Matches'} >
+                {isLastMatchHome && matchAnalysis && matchAnalysis.matchByTeam && <FlatList data={matchAnalysis.matchByTeam} style={{ height: 750 }} renderItem={renderItem} keyExtractor={item => item.id} ListHeaderComponent={renderMatchHeaders} contentContainerStyle={{ alignItems: 'center' }} />}
+                {!isLastMatchHome && matchAnalysis && matchAnalysis.matchAgainstTeam && <FlatList data={matchAnalysis.matchAgainstTeam} style={{ height: 750 }} renderItem={renderItem} keyExtractor={item => item.id} ListHeaderComponent={renderMatchHeaders} contentContainerStyle={{ alignItems: 'center' }} />}
+            </Tab>
+        </Tabs>
     );
 }
 export default MatchScreen;

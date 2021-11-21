@@ -1,11 +1,12 @@
-import { Content, H1, H2, H3, Text } from 'native-base';
-import React from 'react';
+import { Button, Content, H1, H2, H3, Segment, Text, Container } from 'native-base';
+import React, { useState } from 'react';
 import { baseStyles } from '../styles/base'
 import { MatchCard } from './Match/MatchCard';
 import { TournamentMatchDto } from '../models/match';
 import MatchScore from './Match/MatchScore';
 
 function DevScreen({ navigation, route }) {
+
     const match: TournamentMatchDto = {
         homeTeam: 'Mumbai Indians',
         visitorTeam: 'Chennai Super Kings',
@@ -50,6 +51,18 @@ function DevScreen({ navigation, route }) {
             ]
         }
     }
+
+    const [seg, setSeg] = useState<number>(1)
+
+    // const selectComponent = (activePage) => () => this.setSeg(activePage)
+
+    const _renderComponent = () => {
+        if (seg === 1)
+            return <Text >Segment 1</Text > //... Your Component 1 to display
+        else
+            return <Text >Segment 2</Text >//... Your Component 2 to display
+    }
+
     return (
         <Content contentContainerStyle={baseStyles.container} >
             {/* <H1>H1 Title</H1>
@@ -70,7 +83,23 @@ function DevScreen({ navigation, route }) {
             <Text primary style={baseStyles.header}> Header Title</Text> 
             <MatchCard match={match} index={1} navigateToMatch={() => { }}></MatchCard>*/}
             <MatchScore match={match}></MatchScore>
-
+            <Container>
+                <Segment>
+                    <Button first onPress={() => setSeg(1)} active={seg === 1}>
+                        <Text>Puppies</Text>
+                    </Button>
+                    <Button onPress={() => setSeg(2)} active={seg === 2}>
+                        <Text>Kittens</Text>
+                    </Button>
+                    <Button last active={seg === 3} onPress={() => setSeg(3)}>
+                        <Text>Cubs</Text>
+                    </Button>
+                </Segment>
+                <Content padder>
+                    <Text>Awesome segment</Text>
+                    {_renderComponent()}
+                </Content>
+            </Container>
         </Content >
     );
 }

@@ -264,8 +264,8 @@ export default {
   },
 
   // Segment
-  segmentBackgroundColor: '#f8f8f8',
-  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
+  segmentBackgroundColor: '#f8f8f8', //
+  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#007aff' : '#000', //fff
   segmentTextColor: '#333',
   segmentActiveTextColor: '#fff',
   get segmentBorderColor() {
