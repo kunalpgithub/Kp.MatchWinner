@@ -4,6 +4,7 @@ import { baseStyles } from '../styles/base'
 import { MatchCard } from './Match/MatchCard';
 import { TournamentMatchDto } from '../models/match';
 import MatchScore from './Match/MatchScore';
+import { StyleSheet, Dimensions } from "react-native";
 
 function DevScreen({ navigation, route }) {
 
@@ -82,6 +83,9 @@ function DevScreen({ navigation, route }) {
             <Text primary style={baseStyles.smallText}>Small Text</Text>
             <Text primary style={baseStyles.header}> Header Title</Text> 
             <MatchCard match={match} index={1} navigateToMatch={() => { }}></MatchCard>*/}
+            <Text> Width = {Dimensions.get('window').width}</Text>
+            <Text> Height = {Dimensions.get('window').height}</Text>
+
             <MatchScore match={match}></MatchScore>
             <Container>
                 <Segment>

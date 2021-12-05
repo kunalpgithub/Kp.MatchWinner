@@ -41,6 +41,7 @@ namespace Kp.MatchWinner.MatchAdmin
 
             var currentTournaments = from tmg in tmGroup
                         join t in _tournamentRepo.AsQueryable().ToList() on tmg.Key.TournamentId equals t.Id
+                        orderby tmg.Key.Season descending
                         select new CurrentTournamentDto {
                             TournamentId =tmg.Key.TournamentId,
                             TournamentName = t.TournamentName,
@@ -54,5 +55,9 @@ namespace Kp.MatchWinner.MatchAdmin
             var matches = _tournamentMatchRepo.Where(x => x.HomeTeamScoreCard == null && x.VisitorTeamScoreCard == null && x.PlayedDate <= DateTime.Now.AddDays(-1));
             return ObjectMapper.Map<List<TournamentMatch>, List<TournamentMatchDto>>(matches.ToList());
         }
+
+        //public bool uploadTournament() { 
+
+        //}
     }
 }

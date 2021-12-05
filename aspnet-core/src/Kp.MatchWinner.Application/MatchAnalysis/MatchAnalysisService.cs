@@ -28,8 +28,8 @@ namespace Kp.MatchWinner.MatchAnalysis
             var matchesAgainstTeam = allMatchesByTeam.Where(x => x.VisitorTeam == visitorTeam || x.HomeTeam == visitorTeam).Take(5);
             var matchesByTeam = allMatchesByTeam.Where(x => x.VisitorTeam == homeTeam || x.HomeTeam == homeTeam).Take(5);
             var matchesBetweenTeam = allMatchesByTeam.Where(x => (x.HomeTeam == homeTeam || x.VisitorTeam == homeTeam) && (x.HomeTeam == visitorTeam || x.VisitorTeam == visitorTeam)).Take(5);
-            var allHomeTeamMatchesAtVenue = allMatchesByTeam.Where(x => (x.Venue.Contains(subVenues[0]) || x.Venue.Contains(subVenues[1])) && (x.VisitorTeam == homeTeam || x.HomeTeam == homeTeam)).Take(5);
-            var allVisitorTeamMatchesAtVenue = allMatchesByTeam.Where(x => (x.Venue.Contains(subVenues[0]) || x.Venue.Contains(subVenues[1])) && (x.VisitorTeam == visitorTeam || x.HomeTeam == visitorTeam)).Take(5);
+            var allHomeTeamMatchesAtVenue = allMatchesByTeam.Where(x => x.Venue.Contains(subVenues[0])  && (x.VisitorTeam == homeTeam || x.HomeTeam == homeTeam)).Take(5);
+            var allVisitorTeamMatchesAtVenue = allMatchesByTeam.Where(x => x.Venue.Contains(subVenues[0]) && (x.VisitorTeam == visitorTeam || x.HomeTeam == visitorTeam)).Take(5);
 
             return new MatchAnalysisReport
             {

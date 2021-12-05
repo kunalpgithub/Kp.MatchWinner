@@ -119,7 +119,8 @@ namespace KP.MatchWinner.WebScrapperConsole
             {
                 string date = match.FindElement(By.CssSelector("div.match-info>span.bold")).Text;
                 string venue = match.FindElement(By.CssSelector("div.match-info>span.match-no>a")).Text;
-                var startIndex = venue.IndexOf("Match at",StringComparison.InvariantCultureIgnoreCase) + "Match at".Length;
+
+                var startIndex = venue.IndexOf(" at ",StringComparison.InvariantCultureIgnoreCase) + " at ".Length; // Multiple word  Match at, Knockout at, Challenger at,Final at
                 var lastIndex = venue.IndexOf("(") != -1 ? venue.IndexOf("(") : venue.Length - 1;
                 string homeTeamScore = match.FindElement(By.CssSelector("div.innings-info-1>span")).Text;
                 string homeTeam = match.FindElement(By.CssSelector("div.innings-info-1")).Text;

@@ -23,6 +23,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.IdentityModel.Logging;
 
 namespace Kp.MatchWinner
 {
@@ -53,6 +54,9 @@ namespace Kp.MatchWinner
             ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+
+            if (hostingEnvironment.IsDevelopment()) { IdentityModelEventSource.ShowPII = true; }
+
         }
 
         private void ConfigureUrls(IConfiguration configuration)

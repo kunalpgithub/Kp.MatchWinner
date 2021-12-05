@@ -45,10 +45,10 @@ namespace KP.MatchWinner.WebScrapperConsole
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _application.Initialize(_serviceProvider);
-            //await ScrapOldTournament();
+            await ScrapOldTournament();
             //await ScrapRunningTournament();
 
-            await UploadFixture("Caribbean Premier League", "2021", @"C:\Users\kunal\Downloads\caribbean-premier-league-2021-events.ics");
+            //await UploadFixture("Big Bash League", "2021/22", @"C:\Users\kunal\Downloads\big-bash-league-2021-22-events.ics");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -139,12 +139,32 @@ namespace KP.MatchWinner.WebScrapperConsole
         {
             //Guid id = new Guid(Convert.FromBase64String("qu6lQ1b3A5l90zn7YVHEhg=="));
             //var tournament = await _tournamentService.GetAsync(id);
+
+            //Get tournament.
             var tournament = _tournamentService.GetTournamentByName(tournamentName);
 
+            //Create tournament if does not exist.
+            if (tournament == null)
+            {
+                //Create tournament with season
+                List<TournamentSeasonDto> seasons = new List<TournamentSeasonDto>() { new TournamentSeasonDto { IsAvailable = false, Season = season } };
+                tournament = await _tournamentService.CreateAsync(new TournamentDto
+                {
+                    TournamentName = tournamentName,
+                    Seasons = seasons
+                });
+            }// Update tournament is season doesn't exist.
+            else if(!tournament.Seasons.Any(x => x.Season == season))
+            {
+
+                tournament.Seasons.Append(new TournamentSeasonDto { IsAvailable = false, Season = season });
+                tournament = await _tournamentService.UpdateAsync(tournament.Id,tournament);
+            }
+
+            //Insert schedule for calendar file.
             //@"C:\Users\kunal\Downloads\caribbean-premier-league-2021-events.ics"
             string text = System.IO.File.ReadAllText(filepath);
             var calendar = Ical.Net.Calendar.Load(text);
-            //List<TournamentMatchDto> matches = new List<TournamentMatchDto>();
             foreach (var evnt in calendar.Events)
             {
                 var match = new TournamentMatchDto();

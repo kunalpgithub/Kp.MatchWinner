@@ -14,9 +14,9 @@ const ENV = {
     },
   },
   prod: {
-    apiUrl: 'http://localhost:44312',
+    apiUrl: 'https://matchwinner.azurewebsites.net',
     oAuthConfig: {
-      issuer: 'http://localhost:44312',
+      issuer: 'https://matchwinner.azurewebsites.net',
       clientId: 'MatchWinner_App',
       clientSecret: '1q2w3e*',
       scope: 'MatchWinner',

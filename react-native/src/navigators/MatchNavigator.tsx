@@ -4,7 +4,7 @@ import MatchScreen from '../screens/Match/MatchScreen';
 import TournamentScreen from '../screens/Match/ScheduleScreen';
 import MenuIcon from '../components/MenuIcon/MenuIcon';
 import { LocalizationContext } from '../contexts/LocalizationContext';
-import { H1, H3, Text } from 'native-base';
+import { H1, H3, Subtitle, Text, Title } from 'native-base';
 import { Button } from 'react-native'
 import { TournamentMatchDto } from '../models/match';
 import ScheduleScreen from '../screens/Match/ScheduleScreen';
@@ -25,8 +25,8 @@ type HeaderTitleProps = {
 
 function HeaderTitle(props: HeaderTitleProps) {
   return <>
-    <H3>Match Analysis</H3>
-    {/* {props.match && <Text>{props.match.homeTeam} vs {props.match.visitorTeam}</Text>} */}
+    <Title style={{ color: "#000" }}>Match Analysis</Title>
+    {props.match && <Subtitle style={{ color: "#000" }}>{props.match.homeTeam} vs {props.match.visitorTeam}</Subtitle>}
   </>
 }
 

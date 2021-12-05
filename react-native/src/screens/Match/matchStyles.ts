@@ -18,25 +18,14 @@ const matchStyles = createStyles({
         fontSize: textSize.content,
         // color: textColor.primary,
     },
-    cardDescription: {
-        // fontSize: textSize.content,
-        // color: textColor.primary,
-
-    },
     matchCard: {
         // maxWidth: 350,
         // minWidth: 350,
-        width: dimensions.fullWidth > 350 ? 350 : dimensions.fullWidth - 20,
-        padding: 10,
+        width: dimensions.fullWidth > 450 ? 450 : dimensions.fullWidth - 20,
+        // padding: 10,
         backgroundColor: '#fff',
         // padding: 0,
     },
-    matchCardItem: {
-        backgroundColor: 'transparent',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-
-    }
 })
 
 export default matchStyles

@@ -37,10 +37,7 @@ namespace Kp.MatchWinner.MatchAdmin
         public TournamentDto GetTournamentByName(string tournamentName)
         {
             var tournament = _tournamentRepo.FirstOrDefault(x => x.TournamentName.ToLower() == tournamentName.ToLower().Trim());
-            if (tournament == null) throw new Exception($"Tournament with name {tournamentName} not found.");
             return ObjectMapper.Map<Tournament, TournamentDto>(tournament);
         }
-
-        
     }
 }
