@@ -10,13 +10,20 @@ import { TournamentMatchDto } from '../models/match';
 import ScheduleScreen from '../screens/Match/ScheduleScreen';
 import TournamentsScreen from '../screens/Match/TournamentsScreen';
 import DevScreen from '../screens/DevScreen';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-type MatchRouteStackParamList = {
+
+type TournamentRouteStackParamList = {
   Match: { match: TournamentMatchDto },
   Tournaments: {}
   Schedule: {},
   Home: {},
+
+}
+
+type MatchRouteStackParamList = {
   Dev: {}
+  Tournaments: TournamentRouteStackParamList
 }
 
 type HeaderTitleProps = {
@@ -30,44 +37,76 @@ function HeaderTitle(props: HeaderTitleProps) {
   </>
 }
 
-const Stack = createStackNavigator<MatchRouteStackParamList>();
+const TournamentStack = createStackNavigator<TournamentRouteStackParamList>();
+const DevStack = createStackNavigator();
 
-export default function MatchStackNavigator() {
-
-  const { t } = React.useContext(LocalizationContext);
+export function DevStackNavigator() {
 
   return (
-    <Stack.Navigator initialRouteName="Home" >
+    <DevStack.Navigator initialRouteName="Dev">
+      <DevStack.Screen name="Dev" component={DevScreen} options={({ route, navigation }) => ({
+        headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
+        title: 'Tournaments',
+        // headerRight: () => (<Button onPress={() => navigation.goBack()} title='BACK' />)
+      })} ></DevStack.Screen>
+    </DevStack.Navigator>
+  )
+}
+
+
+export default function TournamentStackNavigator() {
+  return (
+    <TournamentStack.Navigator initialRouteName="Tournaments"  >
       {/* screenOptions={{ headerStyle: { backgroundColor: '#00897B' }, cardStyle: { backgroundColor: '#fff' } }}   */}
-      <Stack.Screen
-        name="Schedule"
+      <TournamentStack.Screen
+        name="Tournaments"
         component={TournamentsScreen}
-      />
-      <Stack.Screen
-        name="Home"
-        component={ScheduleScreen}
         options={({ route, navigation }) => ({
-          // headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
-          title: 'Tournament',
+          headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
+          title: 'Tournaments',
           // headerRight: () => (<Button onPress={() => navigation.goBack()} title='BACK' />)
         })}
       />
-      <Stack.Screen
+      <TournamentStack.Screen
+        name="Schedule"
+        component={ScheduleScreen}
+        options={({ route, navigation }) => ({
+          headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
+          title: 'Schedule',
+          // headerRight: () => (<Button onPress={() => navigation.goBack()} title='BACK' />)
+        })}
+      />
+      <TournamentStack.Screen
         name="Match"
         component={MatchScreen}
         options={({ route, navigation }) => ({
-          // headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
-          // title:
-          //   'Match Analysis for ' +
-          //   route.params.match.homeTeam +
-          //   ' vs ' +
-          //   route.params.match.visitorTeam,
+          headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
           headerTitle: props => <HeaderTitle match={route.params.match} ></HeaderTitle>,
           // headerRight: () => (<Button onPress={() => navigation.goBack()} title='BACK' />)
 
         })}
       />
-      <Stack.Screen name="Dev" component={DevScreen}></Stack.Screen>
-    </Stack.Navigator>
+      {/* <Stack.Screen name="Dev" component={DevScreen}
+        options={({ route, navigation }) => ({
+          // headerLeft: () => <MenuIcon onPress={() => navigation.openDrawer()} />,
+          title: 'Crash Here💣🔥🔥🔥',
+          // headerRight: () => (<Button onPress={() => navigation.goBack()} title='BACK' />)
+
+        })}
+      ></Stack.Screen> */}
+    </TournamentStack.Navigator>
   );
 }
+
+// const Tab = createBottomTabNavigator<MatchRouteStackParamList>();
+// export default function MatchTabNavigator() {
+
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Tournaments" component={TournamentStackNavigator}></Tab.Screen>
+//       <Tab.Screen name="Dev" component={DevScreen}></Tab.Screen>
+//     </Tab.Navigator>
+//   )
+
+
+// }

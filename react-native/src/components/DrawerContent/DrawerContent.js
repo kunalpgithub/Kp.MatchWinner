@@ -9,7 +9,7 @@ import { withPermission } from '../../hocs/PermissionHOC';
 
 const screens = {
   Home: { label: '::Menu:Home', iconName: 'home' },
-  Match: { label: '::Menu:Match', iconName: 'match' },
+  Match: { label: '::Menu:Match', iconName: 'Trophy' },
   Users: {
     label: 'AbpIdentity::Users',
     iconName: 'contacts',
@@ -17,10 +17,11 @@ const screens = {
   },
   Tenants: {
     label: 'AbpTenantManagement::Tenants',
-    iconName: 'people',
+    iconName: 'team', //'people',
     requiredPolicy: 'AbpTenantManagement.Tenants',
   },
-  Settings: { label: 'AbpSettingManagement::Settings', iconName: 'cog' },
+  Settings: { label: 'AbpSettingManagement::Settings', iconName: 'setting' }, // 'cog'
+  Dev: { label: '::Menu:Dev', requiredPolicy: 'AbpIdentity.Users', iconName: 'tool' },
 };
 
 const ListItemWithPermission = withPermission(ListItem);
@@ -50,12 +51,15 @@ function DrawerContent({ navigation, state: { routeNames, index: currentScreenIn
               style={{
                 ...styles.navItem,
                 backgroundColor: name === routeNames[currentScreenIndex] ? '#38003c' : '#f2f2f2',
+                marginLeft: 0,
               }}>
-              <Left>
+              <Left style={{ flex: 0.1 }}>
                 <Icon
                   dark={name !== routeNames[currentScreenIndex]}
                   light={name === routeNames[currentScreenIndex]}
                   name={screens[name].iconName}
+                  // IonIcons={'AntDesign'}
+                  type={'AntDesign'}
                 />
               </Left>
               <Body style={{ borderBottomWidth: 0 }}>

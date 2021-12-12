@@ -1,4 +1,4 @@
-import { Button, Content, H1, H2, H3, Segment, Text, Container } from 'native-base';
+import { Button, Content, H1, H2, H3, Segment, Text, Container, Icon } from 'native-base';
 import React, { useState } from 'react';
 import { baseStyles } from '../styles/base'
 import { MatchCard } from './Match/MatchCard';
@@ -53,6 +53,8 @@ function DevScreen({ navigation, route }) {
         }
     }
 
+
+
     const [seg, setSeg] = useState<number>(1)
 
     // const selectComponent = (activePage) => () => this.setSeg(activePage)
@@ -103,6 +105,11 @@ function DevScreen({ navigation, route }) {
                     <Text>Awesome segment</Text>
                     {_renderComponent()}
                 </Content>
+
+                <Icon
+                    name={'tool'}
+                    type={'AntDesign'}
+                />
             </Container>
         </Content >
     );

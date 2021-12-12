@@ -17,8 +17,6 @@ import { isTokenValid } from '../../utils/TokenUtils';
 import DrawerNavigator from '../../navigators/DrawerNavigator';
 import AuthNavigator from '../../navigators/AuthNavigator';
 import { getEnvVars } from '../../../Environment';
-import MatchStackNavigator from '../../navigators/MatchNavigator';
-import { baseStyles } from '../../styles/base';
 
 const { localization } = getEnvVars();
 
@@ -69,8 +67,8 @@ function AppContainer({ language, fetchAppConfig, token, setToken }) {
         {isReady && language ? (
           <LocalizationContext.Provider value={localizationContext}>
             <NavigationContainer>
-              {/* {isValid ? <DrawerNavigator /> : <AuthNavigator />} */}
-              <DrawerNavigator></DrawerNavigator>
+              {isValid ? <DrawerNavigator /> : <AuthNavigator />}
+              {/* <DrawerNavigator></DrawerNavigator> */}
             </NavigationContainer>
           </LocalizationContext.Provider>
         ) : null}

@@ -1,10 +1,11 @@
-import { Tabs, Tab, Content, Text, Segment, Button } from 'native-base';
+import { Tabs, Tab, Content, Text, Segment, Button, Container, CardItem, Card, Left, Right } from 'native-base';
 import { FlatList, Platform } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { getMatchAnalysis } from '../../api/MatchAPI';
 import { useFocusEffect } from '@react-navigation/core';
-import { MatchAnalysisReport, TournamentMatchDto } from '../../models/match';
+import { BatsManDto, BowlerDto, MatchAnalysisReport, TournamentMatchDto } from '../../models/match';
 import MatchScore from './MatchScore';
+import { string } from 'prop-types';
 
 
 function MatchScreen({ navigation, route }) {
@@ -14,10 +15,15 @@ function MatchScreen({ navigation, route }) {
     const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisReport>();
     const [isGroundBattleHome, setIsGroundBattleHome] = useState<boolean>(true);
     const [isLastMatchHome, setIsLastMatchHome] = useState<boolean>(true);
+    const [rankedPlayerList, setRankedPlayerList] = useState<rankedPlayer[]>();
 
     const getMatchAnalysisData = () => {
         getMatchAnalysis(match.homeTeam, match.visitorTeam, match.venue).then(data => {
+
+            //Find all players unique players
+            //
             setMatchAnalysis(data);
+            RankPlayers(data);
         });
     };
     useFocusEffect(
@@ -25,6 +31,118 @@ function MatchScreen({ navigation, route }) {
             getMatchAnalysisData();
         }, []),
     );
+    type rankedPlayer = {
+        name: string,
+        rank: number,
+        plus10: number,
+        plus20: number,
+        plus30: number,
+        plus40: number,
+        plus50: number,
+        wickets: number
+    }
+
+    let rankedPlayers: rankedPlayer[] = []
+    const rankPlayer = <Type extends BatsManDto | BowlerDto>(currentValue: Type): Type => {
+
+        let player: rankedPlayer = {
+            name: currentValue.name,
+            rank: 0,
+            plus10: 0,
+            plus20: 0,
+            plus30: 0,
+            plus40: 0,
+            plus50: 0,
+            wickets: 0
+        };
+        if (rankedPlayers && rankedPlayers.some(player => player.name == currentValue.name)) {
+            const index = rankedPlayers.findIndex((player) => player.name == currentValue.name);
+            player = rankedPlayers[index];
+            calculateRank(player, currentValue);
+        }
+        else {
+            calculateRank(player, currentValue);
+            rankedPlayers.push(player);
+        }
+        return currentValue;
+    }
+
+    function calculateRank(player: rankedPlayer, currentValue: BatsManDto | BowlerDto) {
+        if ((currentValue as BatsManDto).wicketBy !== undefined) {
+            if (currentValue.run < 10)
+                player.plus10 += 1;
+            else if (currentValue.run > 10 && currentValue.run < 20)
+                player.plus20 += 1
+            else if (currentValue.run > 20 && currentValue.run < 30)
+                player.plus30 += 1
+            else if (currentValue.run > 30 && currentValue.run < 40)
+                player.plus40 += 1
+            else if (currentValue.run > 50)
+                player.plus50 += 1
+
+            player.rank += currentValue.run / 10;
+
+        }
+        else if ((currentValue as BowlerDto).wicket !== undefined) {
+            player.wickets += (currentValue as BowlerDto).wicket
+            player.rank += (currentValue as BowlerDto).wicket / 3;
+        }
+    }
+
+    const RankPlayers = (data: MatchAnalysisReport) => {
+
+        data.matchBetweenTeam.forEach((match) => {
+            match.homeTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+            match.homeTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            match.visitorTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+            match.visitorTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+        });
+        data.homeTeamAtVenue.forEach((homeTeam) => {
+            if (homeTeam.homeTeam == match.homeTeam) {
+                homeTeam.homeTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                homeTeam.homeTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+            if (homeTeam.visitorTeam == match.homeTeam) {
+                homeTeam.visitorTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                homeTeam.visitorTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+
+        })
+        data.visitorTeamAtVenue.forEach((visitorTeamMatch) => {
+            if (visitorTeamMatch.visitorTeam == match.visitorTeam) {
+                visitorTeamMatch.visitorTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                visitorTeamMatch.visitorTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+            if (visitorTeamMatch.homeTeam == match.visitorTeam) {
+                visitorTeamMatch.homeTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                visitorTeamMatch.homeTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+
+        })
+        data.matchAgainstTeam.forEach((againstMatch) => {
+            if (againstMatch.visitorTeam == match.homeTeam) {
+                againstMatch.visitorTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                againstMatch.visitorTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+            if (againstMatch.homeTeam == match.homeTeam) {
+                againstMatch.homeTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                againstMatch.homeTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+        })
+
+        data.matchByTeam.forEach((byMatch) => {
+            if (byMatch.visitorTeam == match.homeTeam) {
+                byMatch.visitorTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                byMatch.visitorTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+            if (byMatch.homeTeam == match.homeTeam) {
+                byMatch.homeTeamScoreCard.batsmen.forEach(batsman => rankPlayer(batsman));
+                byMatch.homeTeamScoreCard.bowlers.forEach(bowler => rankPlayer(bowler));
+            }
+        })
+
+        setRankedPlayerList(rankedPlayers.sort());
+    }
     const [activeTab, setActiveTab] = useState<number>(0);
     const renderMatchHeaders = () => {
         return (
@@ -111,7 +229,47 @@ function MatchScreen({ navigation, route }) {
                     />
                 )}
             </Tab>
-        </Tabs>
+            <Tab heading={'Players'}>
+                {rankedPlayerList &&
+                    (<FlatList
+                        data={rankedPlayerList}
+                        renderItem={({ item }) => <Card>
+                            <CardItem header>
+                                <Left>
+                                    <Text> {item.name}</Text>
+                                </Left>
+                                <Right>
+                                    <Text> {item.rank}</Text>
+                                </Right>
+                            </CardItem>
+                            <CardItem>
+                                <Text style={{ padding: 5 }}>{'10+:' + item.plus10}</Text>
+                                <Text style={{ padding: 5 }}>{'20+:' + item.plus20}</Text>
+                                <Text style={{ padding: 5 }}>{'30+:' + item.plus30}</Text>
+                                <Text style={{ padding: 5 }}>{'40+:' + item.plus40}</Text>
+                                <Text style={{ padding: 5 }}>{'50+:' + item.plus50}</Text>
+                                <Text style={{ padding: 5 }}>{'Wkts:' + item.wickets}</Text>
+                            </CardItem>
+                        </Card>}
+                        keyExtractor={item => item.name}
+                        // ListHeaderComponent={() => <Container style={{ display: 'flex', flexDirection: 'row' }}>
+                        //     <Text>Player</Text>
+                        //     <Text>Rank</Text>
+                        //     <Text>10+</Text>
+                        //     <Text>20+</Text>
+                        //     <Text>30+</Text>
+                        //     <Text>40+</Text>
+                        //     <Text>50+</Text>
+                        //     <Text>Wicket</Text>
+                        // </Container>}
+                        contentContainerStyle={{ alignItems: 'center' }}
+                        style={{ height: 750 }}
+                    >
+
+                    </FlatList>)}
+
+            </Tab>
+        </Tabs >
     );
 }
 export default MatchScreen;

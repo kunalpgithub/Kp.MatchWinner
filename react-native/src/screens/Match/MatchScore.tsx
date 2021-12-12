@@ -2,6 +2,7 @@ import React from 'react';
 import { CardItem, Card, Body, Left, Right, Text, View, Thumbnail, Header, Content } from 'native-base';
 import { TeamScoreDto, TournamentMatchDto } from '../../models/match';
 import matchStyle from './matchStyles';
+import Moment from 'moment';
 
 
 const PlayerScore = (props: { name: string, score: string }): JSX.Element => (
@@ -52,6 +53,7 @@ const TeamScore = (props: { team: TeamScoreDto; teamName: string; teamScore: str
                 </Right>
             </View>
         </CardItem>
+
     </>
 );
 
@@ -59,15 +61,27 @@ function MatchScore(props: { match: TournamentMatchDto, teamToShow: string }) {
     const { match } = props;
     return (
         <Card style={matchStyle.matchCard}>
+            <CardItem zeroPadding  >
+                <Left >
+                    <Text style={[matchStyle.cardContent, { fontWeight: 'bold', marginLeft: 0 }]}>{match.venue}</Text>
+                </Left>
+                <Right>
+                    <Text style={[matchStyle.cardContent, { fontWeight: 'bold' }]}>{Moment(match.playedDate).format('ddd, Do MMM  YY')}</Text>
+                </Right>
+            </CardItem>
             {(props.teamToShow === "" || props.teamToShow == match.homeTeam) && <TeamScore
                 team={match.homeTeamScoreCard}
                 teamName={match.homeTeam}
-                teamScore={match.homeTeamScore}></TeamScore>
+                teamScore={match.homeTeamScore}
+            ></TeamScore>
             }
             {(props.teamToShow === "" || props.teamToShow == match.visitorTeam) && <TeamScore
                 team={match.visitorTeamScoreCard}
                 teamName={match.visitorTeam}
                 teamScore={match.visitorTeamScore}></TeamScore>}
+            <CardItem zeroPadding>
+                <Text style={[matchStyle.cardContent, { fontWeight: 'bold', marginLeft: 5 }]}>{match.winner}</Text>
+            </CardItem >
         </Card>
     );
 }

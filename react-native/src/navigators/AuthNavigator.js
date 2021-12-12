@@ -17,6 +17,11 @@ export default function AuthStackNavigator() {
           title: t('AbpAccount::Login'),
         })}
       />
+      {/* <Stack.Screen
+        name="Match"
+        component={MatchStackNavigator}
+        // sceneContainerStyle={{ backgroundColor: '#1E1E1E' }}
+      /> */}
     </Stack.Navigator>
   );
 }

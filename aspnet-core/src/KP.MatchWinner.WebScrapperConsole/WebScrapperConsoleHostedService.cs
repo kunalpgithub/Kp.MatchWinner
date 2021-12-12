@@ -45,8 +45,8 @@ namespace KP.MatchWinner.WebScrapperConsole
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _application.Initialize(_serviceProvider);
-            await ScrapOldTournament();
-            //await ScrapRunningTournament();
+            //await ScrapOldTournament();
+            await ScrapRunningTournament();
 
             //await UploadFixture("Big Bash League", "2021/22", @"C:\Users\kunal\Downloads\big-bash-league-2021-22-events.ics");
         }
