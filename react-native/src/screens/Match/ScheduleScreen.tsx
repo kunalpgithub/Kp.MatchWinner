@@ -41,7 +41,10 @@ function ScheduleScreen({ navigation }) {
     return (
         <Content contentContainerStyle={baseStyles.container} >
             <Text primary style={baseStyles.header}>{tournament}</Text>
+
             <FlatList data={matches} renderItem={({ item, index }) => Moment(item.playedDate) >= Moment() && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>} keyExtractor={item => item.id} />
+            <Text>{'Completed Matches'}</Text>
+            <FlatList data={matches} renderItem={({ item, index }) => Moment(item.playedDate) < Moment() && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>} keyExtractor={item => item.id} />
         </Content>
     );
 }
