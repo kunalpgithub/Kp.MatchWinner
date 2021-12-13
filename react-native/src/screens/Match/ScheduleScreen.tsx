@@ -5,7 +5,7 @@ import { StyleSheet, FlatList } from 'react-native';
 import { getRunningTournament, getMatches } from '../../api/MatchAPI';
 import Moment from 'moment';
 import { CurrentTournamentDto, TournamentMatchDto } from '../../models/match';
-import matchStyles from './matchStyles'
+
 import { baseStyles } from '../../styles/base'
 import { MatchCard } from './MatchCard';
 
@@ -41,10 +41,34 @@ function ScheduleScreen({ navigation }) {
     return (
         <Content contentContainerStyle={baseStyles.container} >
             <Text primary style={baseStyles.header}>{tournament}</Text>
+            {/* <Container>
+                <Text primary style={baseStyles.header}>{'Completed Matches'}</Text>
+                <FlatList
+                    data={matches}
+                    renderItem={({ item, index }) => Moment(item.playedDate).isBefore(Moment(), 'day') && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>}
+                    keyExtractor={item => item.id}
+                // ListHeaderComponent={() => <Text>{'Completed Matches'}</Text>}
+                />
+            </Container> */}
+            <Container>
+                <Text primary style={baseStyles.header}>{'Current Matches'}</Text>
+                <FlatList
+                    data={matches}
+                    renderItem={({ item, index }) => Moment(item.playedDate).isSame(Moment(), 'day') && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>}
+                    keyExtractor={item => item.id}
+                // ListHeaderComponent={() => <Text>{'Upcoming Matches'}</Text>}
+                />
+            </Container>
+            <Container>
+                <Text primary style={baseStyles.header}>{'Upcoming Matches'}</Text>
+                <FlatList
+                    data={matches}
+                    renderItem={({ item, index }) => Moment(item.playedDate).isAfter(Moment(), 'day') && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>}
+                    keyExtractor={item => item.id}
+                // ListHeaderComponent={() => <Text>{'Upcoming Matches'}</Text>}
+                />
+            </Container>
 
-            <FlatList data={matches} renderItem={({ item, index }) => Moment(item.playedDate) >= Moment() && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>} keyExtractor={item => item.id} />
-            <Text>{'Completed Matches'}</Text>
-            <FlatList data={matches} renderItem={({ item, index }) => Moment(item.playedDate) < Moment() && <MatchCard match={item} index={index} navigateToMatch={navigateToMatch}></MatchCard>} keyExtractor={item => item.id} />
         </Content>
     );
 }

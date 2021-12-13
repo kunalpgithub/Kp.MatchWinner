@@ -1,4 +1,4 @@
-import { Tabs, Tab, Content, Text, Segment, Button, Container, CardItem, Card, Left, Right } from 'native-base';
+import { Tabs, Tab, Content, Text, Segment, Button, Container, CardItem, Card, Left, Right, View } from 'native-base';
 import { FlatList, Platform } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { getMatchAnalysis } from '../../api/MatchAPI';
@@ -19,9 +19,6 @@ function MatchScreen({ navigation, route }) {
 
     const getMatchAnalysisData = () => {
         getMatchAnalysis(match.homeTeam, match.visitorTeam, match.venue).then(data => {
-
-            //Find all players unique players
-            //
             setMatchAnalysis(data);
             RankPlayers(data);
         });
@@ -33,6 +30,7 @@ function MatchScreen({ navigation, route }) {
     );
     type rankedPlayer = {
         name: string,
+        playerType: 'batsman' | 'bowler',
         rank: number,
         plus10: number,
         plus20: number,
@@ -71,21 +69,35 @@ function MatchScreen({ navigation, route }) {
         if ((currentValue as BatsManDto).wicketBy !== undefined) {
             if (currentValue.run < 10)
                 player.plus10 += 1;
-            else if (currentValue.run > 10 && currentValue.run < 20)
+            else if (currentValue.run >= 10 && currentValue.run < 20)
                 player.plus20 += 1
-            else if (currentValue.run > 20 && currentValue.run < 30)
+            else if (currentValue.run >= 20 && currentValue.run < 30)
                 player.plus30 += 1
-            else if (currentValue.run > 30 && currentValue.run < 40)
+            else if (currentValue.run >= 30 && currentValue.run < 40)
                 player.plus40 += 1
-            else if (currentValue.run > 50)
+            else if (currentValue.run >= 50)
                 player.plus50 += 1
 
             player.rank += currentValue.run / 10;
+            player.playerType = 'batsman'
 
         }
         else if ((currentValue as BowlerDto).wicket !== undefined) {
+
+            let currentPlayer = (currentValue as BowlerDto);
+
+            if (currentPlayer.wicket <= 1)
+                player.plus10 += 1;
+            else if (currentPlayer.wicket <= 2 && currentPlayer.wicket > 1)
+                player.plus20 += 1
+            else if (currentPlayer.wicket <= 3 && currentPlayer.wicket > 2)
+                player.plus30 += 1
+            else if (currentPlayer.wicket > 3)
+                player.plus40 += 1
+
             player.wickets += (currentValue as BowlerDto).wicket
             player.rank += (currentValue as BowlerDto).wicket / 3;
+            player.playerType = 'bowler'
         }
     }
 
@@ -141,7 +153,7 @@ function MatchScreen({ navigation, route }) {
             }
         })
 
-        setRankedPlayerList(rankedPlayers.sort());
+        setRankedPlayerList(rankedPlayers.sort((a, b) => { if (a.rank > b.rank) { return -1 } else if (a.rank < b.rank) { return 1 } else { return 0 } }));
     }
     const [activeTab, setActiveTab] = useState<number>(0);
     const renderMatchHeaders = () => {
@@ -166,7 +178,7 @@ function MatchScreen({ navigation, route }) {
     const handleTabChange = (changeProps: { from: number; i: number }) => {
         setActiveTab(changeProps.i);
     };
-
+    const [playerType, setPlayerType] = useState<'batsman' | 'bowler'>('batsman');
     return (
         <Tabs locked={true} tabBarPosition={isWeb ? 'top' : 'bottom'} onChangeTab={handleTabChange}>
             <Tab heading={'One on One'}>
@@ -232,42 +244,53 @@ function MatchScreen({ navigation, route }) {
             <Tab heading={'Players'}>
                 {rankedPlayerList &&
                     (<FlatList
-                        data={rankedPlayerList}
+                        data={rankedPlayerList.filter(x => x.playerType == playerType)}
                         renderItem={({ item }) => <Card>
                             <CardItem header>
                                 <Left>
                                     <Text> {item.name}</Text>
                                 </Left>
                                 <Right>
-                                    <Text> {item.rank}</Text>
+                                    <Text> {item.rank.toFixed(2)}</Text>
                                 </Right>
                             </CardItem>
                             <CardItem>
-                                <Text style={{ padding: 5 }}>{'10+:' + item.plus10}</Text>
-                                <Text style={{ padding: 5 }}>{'20+:' + item.plus20}</Text>
-                                <Text style={{ padding: 5 }}>{'30+:' + item.plus30}</Text>
-                                <Text style={{ padding: 5 }}>{'40+:' + item.plus40}</Text>
-                                <Text style={{ padding: 5 }}>{'50+:' + item.plus50}</Text>
-                                <Text style={{ padding: 5 }}>{'Wkts:' + item.wickets}</Text>
+                                {item.playerType == 'batsman' &&
+                                    <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <Text style={{ padding: 5 }}>{'10+:' + item.plus10}</Text>
+                                        <Text style={{ padding: 5 }}>{'20+:' + item.plus20}</Text>
+                                        <Text style={{ padding: 5 }}>{'30+:' + item.plus30}</Text>
+                                        <Text style={{ padding: 5 }}>{'40+:' + item.plus40}</Text>
+                                        <Text style={{ padding: 5 }}>{'50+:' + item.plus50}</Text>
+                                    </View>}
+                                {item.playerType == 'bowler' &&
+                                    <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <Text style={{ padding: 5 }}>{'1+:' + item.plus10}</Text>
+                                        <Text style={{ padding: 5 }}>{'2+:' + item.plus20}</Text>
+                                        <Text style={{ padding: 5 }}>{'3+:' + item.plus30}</Text>
+                                        <Text style={{ padding: 5 }}>{'4+:' + item.plus40}</Text>
+                                        <Text style={{ padding: 5 }}>{'Wkts:' + item.wickets}</Text>
+                                    </View>}
+
                             </CardItem>
                         </Card>}
                         keyExtractor={item => item.name}
-                        // ListHeaderComponent={() => <Container style={{ display: 'flex', flexDirection: 'row' }}>
-                        //     <Text>Player</Text>
-                        //     <Text>Rank</Text>
-                        //     <Text>10+</Text>
-                        //     <Text>20+</Text>
-                        //     <Text>30+</Text>
-                        //     <Text>40+</Text>
-                        //     <Text>50+</Text>
-                        //     <Text>Wicket</Text>
-                        // </Container>}
                         contentContainerStyle={{ alignItems: 'center' }}
                         style={{ height: 750 }}
+                        ListHeaderComponent={() => <Segment>
+                            <Button
+                                onPress={() => setPlayerType('batsman')}
+                                active={playerType == 'batsman'}>
+                                <Text>{'Batsman'}</Text>
+                            </Button>
+                            <Button
+                                onPress={() => setPlayerType('bowler')}
+                                active={playerType == 'bowler'}>
+                                <Text>{'Bowler'}</Text>
+                            </Button>
+                        </Segment>}
                     >
-
                     </FlatList>)}
-
             </Tab>
         </Tabs >
     );
