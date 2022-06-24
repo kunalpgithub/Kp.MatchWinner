@@ -6,7 +6,7 @@ based on this records you can which player is performing better against which op
 
 All score card data are processed from back end using specified format to upload match score.
 
-#Technology
+# Technology
 
 Front end is build using angular.
 Back end is build using abp.net framework.
