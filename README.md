@@ -6,4 +6,6 @@ based on this records you can which player is performing better against which op
 
 #Technology
 
-Front end is build using angular and back end is build using abp.net framework.
+Front end is build using angular.
+Back end is build using abp.net framework.
+Mobile App is build using react-native based expo framework.
