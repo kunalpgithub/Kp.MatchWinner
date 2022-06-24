@@ -8,6 +8,6 @@ All score card data are processed from back end using specified format to upload
 
 # Technology
 
-Front end is build using angular.
-Back end is build using abp.net framework.
-Mobile App is build using react-native based expo framework.
+- Front end is build using angular.
+- Back end is build using abp.net framework.
+- Mobile App is build using react-native based expo framework.
